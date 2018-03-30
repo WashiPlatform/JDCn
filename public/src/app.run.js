@@ -1,4 +1,4 @@
-angular.module('asch').run(function ($rootScope, $location, ipCookie, apiService, $window, userService, nodeService) {
+angular.module('jdcn').run(function ($rootScope, $location, ipCookie, apiService, $window, userService, nodeService) {
     $rootScope.isBodyMask = false;
     $rootScope.isBodyMaskWhite = false;
     $rootScope.userlogin = false;

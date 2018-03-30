@@ -1,4 +1,4 @@
-angular.module('asch').config(function ($routeProvider) {
+angular.module('jdcn').config(function ($routeProvider) {
 
 	$routeProvider.when('/personal', {
 		templateUrl: 'partials/personal/index.html'

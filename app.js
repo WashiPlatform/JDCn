@@ -31,7 +31,7 @@ function verifyGenesisBlock(scope, block) {
 function main() {
     process.stdin.resume();
 
-    var version = '1.3.6';
+    var version = '1.0.1';
     program
         .version(version)
         .option('-c, --config <path>', 'Config file path')
@@ -41,7 +41,7 @@ function main() {
         .option('-g, --genesisblock <path>', 'Genesisblock path')
         .option('-x, --peers [peers...]', 'Peers list')
         .option('-l, --log <level>', 'Log level')
-        .option('-d, --daemon', 'Run asch node as daemon')
+        .option('-d, --daemon', 'Run jdcn node as daemon')
         .option('-e, --execute <path>', 'exe')
         .option('--dapps <dir>', 'DApps directory')
         .option('--base <dir>', 'Base directory')
@@ -49,9 +49,9 @@ function main() {
 
     var baseDir = program.base || './';
 
-    var pidFile = path.join(baseDir, 'asch.pid');
+    var pidFile = path.join(baseDir, 'jdcn.pid');
     if (fs.existsSync(pidFile)) {
-        console.log('Failed: asch server already started');
+        console.log('Failed: jdcn server already started');
         return;
     }
 
@@ -108,24 +108,24 @@ function main() {
         }
     }
 
-    if (appConfig.netVersion === 'mainnet') {
-        var seeds = [
-            757137132,
-            1815983436,
-            759980934,
-            759980683,
-            1807690192,
-            1758431015,
-            1760474482,
-            1760474149,
-            759110497,
-            757134616
-        ];
-        var ip = require('ip');
-        for (var i = 0; i < seeds.length; ++i) {
-            appConfig.peers.list.push({ip: ip.fromLong(seeds[i]), port: 80});
-        }
-    }
+    // if (appConfig.netVersion === 'mainnet') {
+    //     var seeds = [
+    //         757137132,
+    //         1815983436,
+    //         759980934,
+    //         759980683,
+    //         1807690192,
+    //         1758431015,
+    //         1760474482,
+    //         1760474149,
+    //         759110497,
+    //         757134616
+    //     ];
+    //     var ip = require('ip');
+    //     for (var i = 0; i < seeds.length; ++i) {
+    //         appConfig.peers.list.push({ip: ip.fromLong(seeds[i]), port: 80});
+    //     }
+    // }
 
     if (program.log) {
         appConfig.logLevel = program.log;
@@ -138,7 +138,7 @@ function main() {
     }
 
     if (program.daemon) {
-        console.log('Asch server started as daemon ...');
+        console.log('Jdcn server started as daemon ...');
         require('daemon')({cwd: process.cwd()});
         fs.writeFileSync(pidFile, process.pid, 'utf8');
     }

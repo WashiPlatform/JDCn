@@ -1,4 +1,4 @@
-angular.module('asch').filter('xasFilter', function () {
+angular.module('jdcn').filter('jdcnFilter', function () {
     return function (fee) {
         if (!fee) {
             return 0;

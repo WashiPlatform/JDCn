@@ -1,4 +1,4 @@
-angular.module('asch').filter('unitFilter', function ($filter, $translate) {
+angular.module('jdcn').filter('unitFilter', function ($filter, $translate) {
   return function (value) {
     if (value < 10000) {
       return value;

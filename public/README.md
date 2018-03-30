@@ -1,4 +1,4 @@
-# Asch Wallet
+# Jdcn Wallet
 
 ## Development Dependencies
 

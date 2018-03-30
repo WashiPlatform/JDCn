@@ -133,7 +133,7 @@
         </table>
         <div id="writeoff" ng-show="myAss.writeoff">
             <a class="close" href="" ng-click="writeoffClose()"><img src="/assets/common/close.png" alt=""></a>
-            <p>您正在注销{{moneyName}}资产，该操作不可逆，需要消耗手续费0.1 XAS</p>
+            <p>您正在注销{{moneyName}}资产，该操作不可逆，需要消耗手续费0.1 JDCN</p>
             <div class="_item" ng-show="secpwd">
                 <form action="">
                     <label >{{'SECOND_PASSWORD' | translate}}</label>
@@ -144,7 +144,7 @@
         </div>
         <div id="publish" ng-show="myAss.publish">
             <a class="close" href="" ng-click="publishClose()"><img src="/assets/common/close.png" alt=""></a>
-            <p>您正在发行{{myPublishmoneyName}}资产，该操作不可逆，需要消耗手续费0.1 XAS</p>
+            <p>您正在发行{{myPublishmoneyName}}资产，该操作不可逆，需要消耗手续费0.1 JDCN</p>
             <div class="_item">
                 <label >{{'ISSUE_NUMBER' | translate}}</label>
                 <input type="text" ng-model="amount" >
@@ -159,7 +159,7 @@
         </div>
         <div id="settings" ng-show="myAss.set">
             <a class="close" href="" ng-click="settingsClose()"><img src="/assets/common/close.png" alt=""></a>
-            <p>你正在执行{{moneyName}}资产设置操作，需要消耗0.1 XAS</p>
+            <p>你正在执行{{moneyName}}资产设置操作，需要消耗0.1 JDCN</p>
             <div class="_item">
                 <label >{{'TYPE' | translate}}</label>
                 <input type="text" value="ACL"  disabled>
@@ -211,8 +211,8 @@
         </ul>
     </script>
     <div id="comfirmDialog" ng-show="comfirmDialog">
-        <p ng-show="dialogNUM == 1">{{'OPERATION_REQUIRES_FEE' | translate}} {{ publishtrs.fee | xasFilter}} XAS</p>
-        <p ng-show="dialogNUM == 2">{{'OPERATION_REQUIRES_FEE' | translate}} {{ assetTrs.fee | xasFilter}} XAS</p>
+        <p ng-show="dialogNUM == 1">{{'OPERATION_REQUIRES_FEE' | translate}} {{ publishtrs.fee | jdcnFilter}} JDCN</p>
+        <p ng-show="dialogNUM == 2">{{'OPERATION_REQUIRES_FEE' | translate}} {{ assetTrs.fee | jdcnFilter}} JDCN</p>
         <button class="sent1" ng-click="comfirmDialogClose()">{{'CANCEL' | translate}}</button>
         <button class="sent2" ng-click="comfirmSub()">{{'CONFIRM' | translate}}</button>
     </div>

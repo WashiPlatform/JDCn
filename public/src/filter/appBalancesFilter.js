@@ -1,8 +1,8 @@
-// angular.module('asch').filter('appBalancesFilter', function ($filter) {
+// angular.module('jdcn').filter('appBalancesFilter', function ($filter) {
 //     return function (balances) {
 //         for(const balance of balances) {
-//             if (balance.currency == 'XAS') {
-//                 return $filter('xasFilter')(balance.balance) + 'XAS';
+//             if (balance.currency == 'JDCN') {
+//                 return $filter('jdcnFilter')(balance.balance) + 'XAS';
 //             } else {
 //                 return 0
 //             }

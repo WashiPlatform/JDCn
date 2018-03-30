@@ -1,4 +1,4 @@
-angular.module('asch').filter('timeAgoFilter', function($filter) {
+angular.module('jdcn').filter('timeAgoFilter', function($filter) {
 	return function (time, fullTime) {
 		if (fullTime) {
 			return $filter('timestampFilter')(time);

@@ -1,15 +1,15 @@
 {
-  "name": "asch",
+  "name": "jdcn",
   "version": "0.0.1",
   "authors": [
-    "zenking<zhangling@whatsmax.com>"
+    "feisha<hi@waphe.com>"
   ],
-  "description": "asch",
+  "description": "jdcn",
   "moduleType": [
     "globals"
   ],
   "keywords": [
-    "ASCH"
+    "jdcn"
   ],
   "license": "MIT",
   "ignore": [

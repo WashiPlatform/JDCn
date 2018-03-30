@@ -372,9 +372,9 @@ Peer.prototype.isCompatible = function (version) {
   }
   var compatibleVersion = '0.0.0';
   if (library.config.netVersion == 'testnet') {
-    compatibleVersion = '1.2.3';
+    compatibleVersion = '1.0.3';
   } else if (library.config.netVersion == 'mainnet') {
-    compatibleVersion = '1.3.1';
+    compatibleVersion = '1.0.1';
   }
   var numsCompatible = compatibleVersion.split('.').map(Number);
   for (var i = 0; i < nums.length; ++i) {

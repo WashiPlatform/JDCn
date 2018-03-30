@@ -1,4 +1,4 @@
-angular.module('asch').filter('savecheckpbulish', function ($rootScope) {
+angular.module('jdcn').filter('savecheckpbulish', function ($rootScope) {
     return function (key) {
 
         if( $rootScope.checkdelitem[key]){

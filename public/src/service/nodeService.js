@@ -1,4 +1,4 @@
-angular.module('asch').service('nodeService', function ($http) {
+angular.module('jdcn').service('nodeService', function ($http) {
     
     var CHECK_STATUS_INTERVAL = 1000 * 30;
     var CHECK_SERVER_TIMEOUT = 1000 * 3;

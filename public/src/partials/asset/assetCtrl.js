@@ -1,7 +1,7 @@
 /**
  * Created by zenking on 2017/1/6.
  */
-angular.module('asch').controller('assetCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams,userService,postSerivice, $translate,$uibModal) {
+angular.module('jdcn').controller('assetCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams,userService,postSerivice, $translate,$uibModal) {
     $rootScope.active = 'asset';
     $rootScope.userlogin = true;
     $rootScope.isBodyMask = false;

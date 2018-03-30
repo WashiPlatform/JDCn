@@ -16,8 +16,8 @@
             <tr class="table_content" ng-repeat="i in transactions">
                 <td><i class="level">{{i.id}}</i></td>
                 <td>{{i.confirmations}}</td>
-                <td class="orangeFont">{{i.amount | xasFilter}}<i>XAS</i></td>
-                <td class="orangeFont">{{i.fee | xasFilter}}<i>XAS</i></td>
+                <td class="orangeFont">{{i.amount | jdcnFilter}}<i>JDCN</i></td>
+                <td class="orangeFont">{{i.fee | jdcnFilter}}<i>JDCN</i></td>
                 <td>{{i.timestamp | timestampFilter}}</td>
             </tr>
         </table>

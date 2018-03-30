@@ -40,7 +40,7 @@ var inject = require('gulp-inject');
 var serverApi = cjson.load('./server.json');
 var args = process.argv.slice(2);
 var cmd = 'mock';
-var projectName = 'asch';
+var projectName = 'jdcn';
 if (/^--project/.test(args[1])) {
 	projectName = args[1].split('=')[1];
 }
@@ -56,16 +56,16 @@ var scssOptions = {
 var timestamp = dateFormat('yyyyMMddhhmmss', new Date());
 
 var netSeedServers = {
-	dev: "http://testnet.asch.io",
-	local:  "http://127.0.0.1:4096",
-	test: "http://testnet.asch.io",
-	main: "http://mainnet.asch.cn, http://mainnet.asch.io, http://mainnet.asch.so"
+	dev: "http://testnet.jdchain.cc",
+	local:  "http://127.0.0.1:8000",
+	test: "http://testnet.jdchain.cc",
+	main: "http://mainnet.jdchain.cc, http://mainnet.jdcn.io"
 };
 var SEED_SERVERS = netSeedServers.dev;
 
 var magic = '';
 var TEST_MAGIC = '594fe0f3';
-var MAIN_MAGIC = '5f5b3cf5';
+var MAIN_MAGIC = '9e620b6c';
 
 String.prototype.endsWith = function(suffix) {
 	return this.indexOf(suffix, this.length - suffix.length) !== -1;
@@ -253,7 +253,7 @@ gulp.task('partials', function() {
 	fs.ensureDirSync(scssOptions.tmpPath);
 	return gulp.src('src/partials/**/*.html')
 		.pipe(ngTemplate({
-			moduleName: 'asch',
+			moduleName: 'jdcn',
 			filePath: 'js/templateCache.js',
 			prefix: 'partials/'
 		}))

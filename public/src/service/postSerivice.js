@@ -1,4 +1,4 @@
-angular.module('asch').service('postSerivice', function ($http, $translate, $rootScope, apiService, nodeService) {
+angular.module('jdcn').service('postSerivice', function ($http, $translate, $rootScope, apiService, nodeService) {
     /*
     var that = this;
     this.post = function (data) {

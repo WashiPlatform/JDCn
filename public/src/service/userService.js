@@ -1,4 +1,4 @@
-angular.module('asch').service('userService', function () {
+angular.module('jdcn').service('userService', function () {
     this.setData = function (secret, publicKey, account, latestBlock) {
         this.secret = secret;
         this.address = account.address;

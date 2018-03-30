@@ -1,7 +1,7 @@
 {
-  "name": "asch-frontend",
-  "description": "asch frontend",
-  "version": "1.3.6",
+  "name": "jdcn-frontend",
+  "description": "jdcn frontend",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "postinstall": "npm run build",

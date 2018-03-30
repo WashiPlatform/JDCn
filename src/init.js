@@ -315,12 +315,12 @@ module.exports = function(options, done) {
       });
 
       scope.network.server.listen(scope.config.port, scope.config.address, function (err) {
-        scope.logger.log("Asch started: " + scope.config.address + ":" + scope.config.port);
+        scope.logger.log("Jdcn started: " + scope.config.address + ":" + scope.config.port);
 
         if (!err) {
           if (scope.config.ssl.enabled) {
             scope.network.https.listen(scope.config.ssl.options.port, scope.config.ssl.options.address, function (err) {
-              scope.logger.log("Asch https started: " + scope.config.ssl.options.address + ":" + scope.config.ssl.options.port);
+              scope.logger.log("Jdcn https started: " + scope.config.ssl.options.address + ":" + scope.config.ssl.options.port);
 
               cb(err, scope.network);
             });

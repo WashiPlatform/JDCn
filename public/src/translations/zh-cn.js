@@ -111,14 +111,14 @@ window.Translations['zh-cn'] = {
   SAVE_PASSWORD: '保存主密码',
   CONFIRM_PASSWORD: '确认主密码',
   INPUT_PASSWORD_AGAIN: '请重新输入您的主密码',
-  NEW_PWD_TIP_2: '请确保您已安全保存主密码，如果您失去您的主密码，您的帐户将永远无法再打开，您将失去您所有的XAS',
+  NEW_PWD_TIP_2: '请确保您已安全保存主密码，如果您失去您的主密码，您的帐户将永远无法再打开，您将失去您所有的 JDCN',
   CONFIRM: '确认',
   CANCEL: '返回',
 
   // transfer/pay
   SEND: '发送',
   ALREADY_LOCKED: '您已经锁仓，此行为被拒绝',
-  PAY_TIP: '请确保您正在发送XAS给正确的地址，本操作无法撤消',
+  PAY_TIP: '请确保您正在发送 JDCN 给正确的地址，本操作无法撤消',
 
   // peers
   PEER_LIST: '节点列表',
@@ -167,7 +167,7 @@ window.Translations['zh-cn'] = {
   PASSWORD_RULE_TIP: '输入8到16位数字和字母组合',
   INPUT_AGAIN: '再次输入',
   PASSWORD: '密码',
-  SUBMIT_SECOND_PASSWORD_TIP: '请确定您已经安全保存了二级密码，一旦丢失，您在Asch系统中的财产将无法找回，设置二级密码需要5XAS手续费',
+  SUBMIT_SECOND_PASSWORD_TIP: '请确定您已经安全保存了二级密码，一旦丢失，您在Asch系统中的财产将无法找回，设置二级密码需要5JDCN手续费',
   SUBMIT: '提交',
   ALREADY_SET: '已设置',
   NOT_SET: '未设置',
@@ -298,7 +298,7 @@ window.Translations['zh-cn'] = {
   DAPP_COIN_TOTAL_AMOUNT: '总量',
   DAPP_COIN_CURRENT_QUANTITY: '当前流通量',
   DAPP_COIN_BALANCE: 'DAPP余额',
-  DAPP_COIN_FEE: '本次充值手续费: 0.1 xas',
+  DAPP_COIN_FEE: '本次充值手续费: 0.1 JDCN',
 
   // 调教时间
   ADJUST_TIME_YOURSELF: '您本地时间与系统时间差别过大，请手动调校时间',
