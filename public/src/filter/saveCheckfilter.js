@@ -1,4 +1,4 @@
-angular.module('jdcn').filter('saveCheckfilter', function ($rootScope) {
+angular.module('serc').filter('saveCheckfilter', function ($rootScope) {
   return function (key) {
 
       if($rootScope.checkobj[key] || $rootScope.coedobj[key]){

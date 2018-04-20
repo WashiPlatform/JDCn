@@ -1,4 +1,4 @@
-angular.module('jdcn').service('userService', function () {
+angular.module('serc').service('userService', function () {
     this.setData = function (secret, publicKey, account, latestBlock) {
         this.secret = secret;
         this.address = account.address;

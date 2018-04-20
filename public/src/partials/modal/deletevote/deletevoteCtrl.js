@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('deletevoteCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $http, userService, postSerivice, $translate) {
+angular.module('serc').controller('deletevoteCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $http, userService, postSerivice, $translate) {
 
     $rootScope.deletevotetoinfo = false;
     $scope.userService = userService;

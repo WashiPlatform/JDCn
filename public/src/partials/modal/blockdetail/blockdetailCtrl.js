@@ -1,5 +1,5 @@
 
-angular.module('jdcn').controller('blockdetailCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
+angular.module('serc').controller('blockdetailCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
 
     $rootScope.blockdetailinfo = false;
 

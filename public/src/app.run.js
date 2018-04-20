@@ -1,4 +1,4 @@
-angular.module('jdcn').run(function ($rootScope, $location, ipCookie, apiService, $window, userService, nodeService) {
+angular.module('serc').run(function ($rootScope, $location, ipCookie, apiService, $window, userService, nodeService) {
     $rootScope.isBodyMask = false;
     $rootScope.isBodyMaskWhite = false;
     $rootScope.userlogin = false;

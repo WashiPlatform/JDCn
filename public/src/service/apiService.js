@@ -1,4 +1,4 @@
-angular.module('jdcn').service('apiService', function ($http, $rootScope, $location, nodeService) {
+angular.module('serc').service('apiService', function ($http, $rootScope, $location, nodeService) {
 
 	function json2url(json) {
 		var arr = [];

@@ -1,7 +1,7 @@
 /**
  * Created by zenking on 16/8/27.
  */
-angular.module('jdcn').filter('catalogsFilter', function ($filter) {
+angular.module('serc').filter('catalogsFilter', function ($filter) {
     return function (value) {
         var type = '';
         if (value == '1') {

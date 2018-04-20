@@ -41,7 +41,7 @@ function main() {
         .option('-g, --genesisblock <path>', 'Genesisblock path')
         .option('-x, --peers [peers...]', 'Peers list')
         .option('-l, --log <level>', 'Log level')
-        .option('-d, --daemon', 'Run jdcn node as daemon')
+        .option('-d, --daemon', 'Run serc node as daemon')
         .option('-e, --execute <path>', 'exe')
         .option('--dapps <dir>', 'DApps directory')
         .option('--base <dir>', 'Base directory')
@@ -49,9 +49,9 @@ function main() {
 
     var baseDir = program.base || './';
 
-    var pidFile = path.join(baseDir, 'jdcn.pid');
+    var pidFile = path.join(baseDir, 'serc.pid');
     if (fs.existsSync(pidFile)) {
-        console.log('Failed: jdcn server already started');
+        console.log('Failed: Serc server already started');
         return;
     }
 
@@ -138,7 +138,7 @@ function main() {
     }
 
     if (program.daemon) {
-        console.log('Jdcn server started as daemon ...');
+        console.log('Serc server started as daemon ...');
         require('daemon')({cwd: process.cwd()});
         fs.writeFileSync(pidFile, process.pid, 'utf8');
     }

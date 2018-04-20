@@ -1,8 +1,8 @@
-// angular.module('jdcn').filter('appBalancesFilter', function ($filter) {
+// angular.module('serc').filter('appBalancesFilter', function ($filter) {
 //     return function (balances) {
 //         for(const balance of balances) {
-//             if (balance.currency == 'JDCN') {
-//                 return $filter('jdcnFilter')(balance.balance) + 'XAS';
+//             if (balance.currency == 'SERC') {
+//                 return $filter('sercFilter')(balance.balance) + 'XAS';
 //             } else {
 //                 return 0
 //             }

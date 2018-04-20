@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('personalCtrl', function ($scope, $rootScope, apiService, ipCookie, $window, $http, userService, postSerivice, $translate) {
+angular.module('serc').controller('personalCtrl', function ($scope, $rootScope, apiService, ipCookie, $window, $http, userService, postSerivice, $translate) {
 	$rootScope.active = 'personal';
 	$rootScope.userlogin = true;
 	$scope.lockStatus = '';

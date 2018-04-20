@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('headerCtrl', function($scope, $rootScope, apiService, ipCookie, $window, $location) {
+angular.module('serc').controller('headerCtrl', function($scope, $rootScope, apiService, ipCookie, $window, $location) {
    
     $scope.init = function () {
 

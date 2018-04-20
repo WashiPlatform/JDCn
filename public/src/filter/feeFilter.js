@@ -1,4 +1,4 @@
-angular.module('jdcn').filter('feeFilter', function () {
+angular.module('serc').filter('feeFilter', function () {
     return function (fee) {
         if (!fee) {
             return 0;

@@ -1,4 +1,4 @@
-angular.module('jdcn').filter('saveCodeFilter', function ($rootScope) {
+angular.module('serc').filter('saveCodeFilter', function ($rootScope) {
     return function (key) {
 
         if( $rootScope.coedobj[key]){

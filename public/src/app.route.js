@@ -1,4 +1,4 @@
-angular.module('jdcn').config(function ($routeProvider) {
+angular.module('serc').config(function ($routeProvider) {
 
 	$routeProvider.when('/personal', {
 		templateUrl: 'partials/personal/index.html'

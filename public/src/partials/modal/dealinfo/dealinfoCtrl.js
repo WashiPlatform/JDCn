@@ -1,5 +1,5 @@
 
-angular.module('jdcn').controller('dealinfoCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
+angular.module('serc').controller('dealinfoCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
 
     $rootScope.dealdetailinfo = false;
     $scope.CloseDealinfo = function () {

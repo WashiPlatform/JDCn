@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('payCtrl', function ($scope, $rootScope, $filter, apiService, ipCookie, $http, $window, userService, postSerivice, $translate) {
+angular.module('serc').controller('payCtrl', function ($scope, $rootScope, $filter, apiService, ipCookie, $http, $window, userService, postSerivice, $translate) {
     $rootScope.active = 'pay';
     $rootScope.userlogin = true;
 
@@ -13,7 +13,7 @@ angular.module('jdcn').controller('payCtrl', function ($scope, $rootScope, $filt
         if ($scope.amount && Number($scope.amount) > 0) {
             var amount = parseFloat(($scope.amount * 100000000).toFixed(0));
             var fee = AschJS.transaction.calculateFee(amount);
-            $scope.fee = $filter('jdcnFilter')(fee);
+            $scope.fee = $filter('sercFilter')(fee);
         }
     }
     // 重制create

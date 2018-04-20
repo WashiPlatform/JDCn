@@ -1,4 +1,4 @@
-var app = angular.module('jdcn', ['ngRoute', 'ui.bootstrap', 'ngTable', 'ipCookie', 'pascalprecht.translate', 'ja.qr']);
+var app = angular.module('serc', ['ngRoute', 'ui.bootstrap', 'ngTable', 'ipCookie', 'pascalprecht.translate', 'ja.qr']);
 
 app.config(function ($httpProvider) {
     // Use x-www-form-urlencoded Content-Type

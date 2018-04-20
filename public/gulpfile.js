@@ -40,7 +40,7 @@ var inject = require('gulp-inject');
 var serverApi = cjson.load('./server.json');
 var args = process.argv.slice(2);
 var cmd = 'mock';
-var projectName = 'jdcn';
+var projectName = 'serc';
 if (/^--project/.test(args[1])) {
 	projectName = args[1].split('=')[1];
 }
@@ -56,10 +56,10 @@ var scssOptions = {
 var timestamp = dateFormat('yyyyMMddhhmmss', new Date());
 
 var netSeedServers = {
-	dev: "http://testnet.jdchain.cc",
+	dev: "http://testnet.serchain.net",
 	local:  "http://127.0.0.1:8000",
-	test: "http://testnet.jdchain.cc",
-	main: "http://mainnet.jdchain.cc, http://mainnet.jdcn.io"
+	test: "http://testnet.serchain.net",
+	main: "http://mainnet.serchain.net"
 };
 var SEED_SERVERS = netSeedServers.dev;
 
@@ -253,7 +253,7 @@ gulp.task('partials', function() {
 	fs.ensureDirSync(scssOptions.tmpPath);
 	return gulp.src('src/partials/**/*.html')
 		.pipe(ngTemplate({
-			moduleName: 'jdcn',
+			moduleName: 'serc',
 			filePath: 'js/templateCache.js',
 			prefix: 'partials/'
 		}))

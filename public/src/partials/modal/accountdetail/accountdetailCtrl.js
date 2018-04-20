@@ -1,5 +1,5 @@
 
-angular.module('jdcn').controller('accountdetailCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
+angular.module('serc').controller('accountdetailCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $translate) {
 
     $rootScope.accountdetailinfo = false;
 

@@ -1,4 +1,4 @@
-angular.module('jdcn').filter('histroyFilter', function($filter) {
+angular.module('serc').filter('histroyFilter', function($filter) {
 	return function (i) {
 		var content = ''
 		if (i.type == 9) {

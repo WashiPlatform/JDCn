@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('blockforgingCtrl', function($scope, $rootScope, apiService, ipCookie, $location,$window,NgTableParams,userService, $translate) {
+angular.module('serc').controller('blockforgingCtrl', function($scope, $rootScope, apiService, ipCookie, $location,$window,NgTableParams,userService, $translate) {
 	$rootScope.active = 'blockforging';
 	$rootScope.userlogin = true;
 	//设置基本像素

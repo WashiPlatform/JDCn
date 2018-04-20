@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('votetoCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $http, userService, postSerivice, $translate) {
+angular.module('serc').controller('votetoCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $http, userService, postSerivice, $translate) {
 
     $rootScope.votetoinfo = false;
 

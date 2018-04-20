@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams, userService, $translate, postSerivice) {
+angular.module('serc').controller('applicationCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams, userService, $translate, postSerivice) {
 	$rootScope.active = 'application';
 	$rootScope.userlogin = true;
 	$scope.newapplication = true;
@@ -22,7 +22,7 @@ angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScop
     apiService.uiaAssetListApi().success(function (assetsRes) {
       const assets = assetsRes.assets
       if(!assets) {
-        $scope.currencys = [ { key: '0', value: 'JDCN' } ]
+        $scope.currencys = [ { key: '0', value: 'SERC' } ]
         return;
       } else {
         for (var i = 0; i < assetsRes.assets.length; i++) {
@@ -37,7 +37,7 @@ angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScop
           value: assets[i].name
         })
       }
-      $scope.currencys = [ { key: '0', value: 'JDCN' } ].concat(uiaAssets)
+      $scope.currencys = [ { key: '0', value: 'SERC' } ].concat(uiaAssets)
     }).error(function(res){
       toastError($translate.instant('ERR_SERVER_ERROR'));
     })
@@ -103,7 +103,7 @@ angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScop
      
 			for (var i = 0; i < balancesRes.balances.length; i ++){
 				var balance = balancesRes.balances[i]
-				if (balance.currency == 'JDCN') {
+				if (balance.currency == 'SERC') {
 					balance.quantityShow = 100000000;
 				}	
 			}
@@ -132,7 +132,7 @@ angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScop
   };
   // 重制create
   $scope.createTransaction = function () {
-    if ($scope.currency.value == 'JDCN') {
+    if ($scope.currency.value == 'SERC') {
       var amount = parseFloat(($scope.amount * 100000000).toFixed(0));
       return AschJS.transfer.createInTransfer($scope.depositedDapp.transactionId, $scope.currency.value, amount, userService.secret, $scope.secondPassword);
     } else {
@@ -155,7 +155,7 @@ angular.module('jdcn').controller('applicationCtrl', function ($scope, $rootScop
         toastError($translate.instant('ERR_AMOUNT_INVALID'));
         return false;
     }
-    if ($scope.currency.value == 'JDCN') {
+    if ($scope.currency.value == 'SERC') {
        var amount = parseFloat(($scope.amount * 100000000).toFixed(0));
        var fee = 10000000;
        if (amount + fee > userService.balance) {

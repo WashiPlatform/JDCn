@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('loginCtrl', function ($scope, $rootScope, apiService, ipCookie, $window, $location, userService, $translate) {
+angular.module('serc').controller('loginCtrl', function ($scope, $rootScope, apiService, ipCookie, $window, $location, userService, $translate) {
 	$rootScope.userlogin = false;
 	$rootScope.showPassword = false;
 	$rootScope.register = true;

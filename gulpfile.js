@@ -12,13 +12,13 @@ var format = util.format;
 var buildTime = moment().format('HH:mm:ss DD/MM/YYYY');
 
 function build(osVersion, netVersion) {
-  var dir = 'jdcn-' + osVersion + '-' + package.version + '-' + netVersion;
+  var dir = 'serc-' + osVersion + '-' + package.version + '-' + netVersion;
   var fullpath = path.join(__dirname, 'build', dir);
   var cmds = [];
   cmds.push(format('cd %s && mkdir -p public dapps tmp logs bin', fullpath));
-  cmds.push(format('cp -r package.json jdcnd init proto %s', fullpath));
+  cmds.push(format('cp -r package.json sercd init proto %s', fullpath));
   if (netVersion != 'localnet') {
-    cmds.push(format('sed -i "" "s/testnet/%s/g" %s/jdcnd', netVersion, fullpath));
+    cmds.push(format('sed -i "" "s/testnet/%s/g" %s/sercd', netVersion, fullpath));
     cmds.push(format('cp config-%s.json %s/config.json', netVersion, fullpath));
     cmds.push(format('cp genesisBlock-%s.json %s/genesisBlock.json', netVersion, fullpath));
   } else {
@@ -52,7 +52,7 @@ function build(osVersion, netVersion) {
 }
 
 function buildSource(netVersion) {
-  var dir = 'jdcn-' + 'linux' + '-' + package.version + '-' + netVersion;
+  var dir = 'serc-' + 'linux' + '-' + package.version + '-' + netVersion;
   var fullpath = path.join(__dirname, 'build', dir);
   return gulp.src('app.js')
     .pipe(webpack({

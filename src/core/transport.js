@@ -398,6 +398,7 @@ private.attachApi = function () {
         if (slots.getNextSlot() - lastSlot >= 12) {
             library.logger.error("OS INFO", shell.getInfo())
             library.logger.error("Blockchain is not ready", {
+                lastBlock: lastBlock,
                 getNextSlot: slots.getNextSlot(),
                 lastSlot: lastSlot,
                 lastBlockHeight: lastBlock.height

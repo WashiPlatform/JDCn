@@ -113,14 +113,14 @@ window.Translations['de-de'] = {
   SAVE_PASSWORD: 'Passwort speichern',
   CONFIRM_PASSWORD: 'Passwort bestätigen',
   INPUT_PASSWORD_AGAIN: 'Bitte Passwort nochmals eintippen',
-  NEW_PWD_TIP_2: 'Stelle sicher, dass das Passwort an einem sicheren Platz verwahrt wird. Im Falle eines Passwortverlustes kannst du nicht mehr auf dein Konto zugreifen und verlierst deine ganzen JDCN.',
+  NEW_PWD_TIP_2: 'Stelle sicher, dass das Passwort an einem sicheren Platz verwahrt wird. Im Falle eines Passwortverlustes kannst du nicht mehr auf dein Konto zugreifen und verlierst deine ganzen SERC.',
   CONFIRM: 'Ok',
   CANCEL: 'Abb.', //abbrechen
 
   // transfer/pay
   SEND: 'Senden',
   ALREADY_LOCKED: 'die Transaktion wird abgelehnt, da ihr Konto bereits gesperrt ist',
-  PAY_TIP: 'Stelle sicher, dass du JDCN an die richtige Adresse schickst. Diese Operation kann nicht rückgängig gemacht werden.',
+  PAY_TIP: 'Stelle sicher, dass du SERC an die richtige Adresse schickst. Diese Operation kann nicht rückgängig gemacht werden.',
 
   // peers
   PEER_LIST: 'Liste von Knoten',
@@ -294,7 +294,7 @@ window.Translations['de-de'] = {
   DAPP_COIN_TOTAL_AMOUNT: 'Summe',
   DAPP_COIN_CURRENT_QUANTITY: 'Anzahl',
   DAPP_COIN_BALANCE: 'DAPP Saldo',
-  DAPP_COIN_FEE: 'Gebühr: 0.1 JDCN',
+  DAPP_COIN_FEE: 'Gebühr: 0.1 SERC',
 
 
   // adjusting time

@@ -168,6 +168,9 @@ module.exports = function(options, done) {
       var server = require('http').createServer(app);
       var io = require('socket.io')(server);
 
+      /**
+         * SSL
+         */
       if (scope.config.ssl.enabled) {
         var privateKey = fs.readFileSync(scope.config.ssl.options.key);
         var certificate = fs.readFileSync(scope.config.ssl.options.cert);
@@ -299,7 +302,7 @@ module.exports = function(options, done) {
           res.sendStatus(403);
         }
         else if ( isApiOrPeer && req.headers["request-node-status"] == "yes"){         
-          //Add server status info to response header
+          // Add server status info to response header
           var lastBlock = scope.modules.blocks.getLastBlock();         
           res.setHeader('Access-Control-Expose-Headers',"node-status");
           res.setHeader("node-status",JSON.stringify({
@@ -315,12 +318,15 @@ module.exports = function(options, done) {
       });
 
       scope.network.server.listen(scope.config.port, scope.config.address, function (err) {
-        scope.logger.log("Jdcn started: " + scope.config.address + ":" + scope.config.port);
+        scope.logger.log("Serc started: " + scope.config.address + ":" + scope.config.port);
 
         if (!err) {
+          /**
+             * SSL
+             */
           if (scope.config.ssl.enabled) {
             scope.network.https.listen(scope.config.ssl.options.port, scope.config.ssl.options.address, function (err) {
-              scope.logger.log("Jdcn https started: " + scope.config.ssl.options.address + ":" + scope.config.ssl.options.port);
+              scope.logger.log("Serc https started: " + scope.config.ssl.options.address + ":" + scope.config.ssl.options.port);
 
               cb(err, scope.network);
             });

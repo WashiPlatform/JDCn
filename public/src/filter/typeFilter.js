@@ -1,4 +1,4 @@
-angular.module('jdcn').filter('typeFilter', function ($filter) {
+angular.module('serc').filter('typeFilter', function ($filter) {
     const TYPE_LABEL = [
         'TRS_TYPE_TRANSFER',
         'TRS_TYPE_SECOND_PASSWORD',

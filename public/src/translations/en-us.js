@@ -119,14 +119,14 @@ window.Translations['en-us'] = {
   SAVE_PASSWORD: 'Save Master Secret',
   CONFIRM_PASSWORD: 'Confirm master secret',
   INPUT_PASSWORD_AGAIN: 'Please re-type your master secret',
-  NEW_PWD_TIP_2: 'Make sure you have saved your master secret in a safe place. If you lost it or forget it, your account will not be available and you will lost all your JDCN.',
+  NEW_PWD_TIP_2: 'Make sure you have saved your master secret in a safe place. If you lost it or forget it, your account will not be available and you will lost all your SERC.',
   CONFIRM: 'Confirm',
   CANCEL: 'Cancel',
 
   // transfer/pay
   SEND: 'Send',
   ALREADY_LOCKED: 'The transaction is rejected due to the account lock.',
-  PAY_TIP: 'Please make sure you send JDCN to the correct address. This operation cannot be cancelled.',
+  PAY_TIP: 'Please make sure you send SERC to the correct address. This operation cannot be cancelled.',
 
   // peers
   PEER_LIST: 'Peer List',
@@ -175,7 +175,7 @@ window.Translations['en-us'] = {
   PASSWORD_RULE_TIP: 'Second secret must be from 8 to 16 alphanumeric characters',
   INPUT_AGAIN: 'Enter Again',
   PASSWORD: 'Secret',
-  SUBMIT_SECOND_PASSWORD_TIP: 'Make sure you have saved your second secret in a safe place. If you lost it, you will not be able to recover your assets in Asch system. You will be charged in JDCN when you reset the second password.',
+  SUBMIT_SECOND_PASSWORD_TIP: 'Make sure you have saved your second secret in a safe place. If you lost it, you will not be able to recover your assets in Asch system. You will be charged in SERC when you reset the second password.',
   SUBMIT: 'Submit',
   ALREADY_SET: 'Already Set',
   NOT_SET: 'Not set yet',
@@ -309,7 +309,7 @@ window.Translations['en-us'] = {
   DAPP_COIN_TOTAL_AMOUNT: 'Total Amount',
   DAPP_COIN_CURRENT_QUANTITY: 'Quantity',
   DAPP_COIN_BALANCE: 'DAPP Balance',
-  DAPP_COIN_FEE: 'Fee: 0.1 JDCN',
+  DAPP_COIN_FEE: 'Fee: 0.1 SERC',
 
 
   // adjusting time

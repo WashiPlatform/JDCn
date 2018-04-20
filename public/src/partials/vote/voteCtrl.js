@@ -1,4 +1,4 @@
-angular.module('jdcn').controller('voteCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams, userService, $translate) {
+angular.module('serc').controller('voteCtrl', function ($scope, $rootScope, apiService, ipCookie, $location, $window, NgTableParams, userService, $translate) {
     $rootScope.active = 'vote';
     $rootScope.userlogin = true;
     $scope.letin = true;
