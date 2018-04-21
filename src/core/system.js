@@ -80,7 +80,6 @@ shared.getSystemInfo = function (req, cb) {
 
 // Private methods
 
-
 // Public methods
 System.prototype.getOS = function () {
   return private.osName;
