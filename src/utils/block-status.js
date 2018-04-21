@@ -2,18 +2,18 @@ var constants = require('./constants.js');
 
 function BlockStatus() {
     var milestones = [
-        350000000, // Initial Reward
-        300000000, // Milestone 1
-        200000000, // Milestone 2
-        100000000, // Milestone 3
-        50000000  // Milestone 4
+        3.5 * 100000000, // Initial Reward
+        3.0 * 100000000, // Milestone 1
+        2.0 * 100000000, // Milestone 2
+        1.0 * 100000000, // Milestone 3
+        0.5 * 100000000  // Milestone 4
     ];
 
     var distance = 3000000, // Distance between each milestone
         rewardOffset = 1; // Start rewards at block (n)
 
     if (global.Config.netVersion === 'mainnet') {
-        rewardOffset = 464500;
+        rewardOffset = 500000;
     }
 
     var parseHeight = function (height) {
@@ -37,11 +37,6 @@ function BlockStatus() {
     };
 
     this.calcReward = function (height) {
-        // 主网络无奖励
-        if (global.Config.netVersion === 'mainnet') {
-            return 0;
-        }
-
         var height = parseHeight(height);
         if (height < rewardOffset || height <= 1) {
             return 0;

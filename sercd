@@ -1,8 +1,8 @@
 #!/bin/bash
 
 readonly PROG_DIR=$(pwd)
-readonly PID_FILE=$PROG_DIR/jdcn.pid
-readonly IPS=("https://www.jdcn.io/downloads-International" "http://125.32.110.138:9999/downloads-Chinese" "http://39.107.52.143-Chinese")
+readonly PID_FILE=$PROG_DIR/serc.pid
+readonly IPS=("https://www.serchain.net/downloads-International" "http://125.32.110.138:9999/downloads-Chinese" "http://39.107.52.143-Chinese")
 
 function read_port() {
   echo `cat $PROG_DIR/config.json |grep '"port"'|head -n 1| awk -F "[:,]" '{print$2}'|tr -d ' '`
@@ -14,17 +14,17 @@ function is_running() {
 
 function status() {
   if is_running; then
-    echo "Jdcn server is running"
+    echo "Serc server is running"
   else
-    echo "Jdcn server is not running"
+    echo "Serc server is not running"
   fi
 }
 
 function start() {
   if is_running; then
-    echo "Jdcn server is already started"
+    echo "Serc server is already started"
   else
-    rm -f $PROG_DIR/jdcn.pid
+    rm -f $PROG_DIR/serc.pid
     node $PROG_DIR/app.js --base $PROG_DIR --daemon $@
   fi
 }
@@ -41,15 +41,15 @@ function stop() {
     while ps -p $pid > /dev/null; do
       if [ $i == 5 ]; then
         kill -9 $pid
-        echo "Jdcn server killed"
+        echo "Serc server killed"
       fi
-      echo "Still waiting for jdcn server to stop ..."
+      echo "Still waiting for Serc server to stop ..."
       sleep 1
       ((i++))
     done
-    echo "Jdcn server stopped"
+    echo "Serc server stopped"
   else
-    echo "Jdcn server is not running"
+    echo "Serc server is not running"
   fi
   rm -f $PID_FILE
 }
@@ -70,12 +70,12 @@ function chosenode(){
   num=${num:-0}
 
   if [ $num -ge $length ];then
-    echo "You chosen wrong number,please run jdcnd again and chose the other node!"
+    echo "You chosen wrong number,please run Sercd again and chose the other node!"
     exit 1
   fi
 
   if [ i${status[$num]} = i"N" ];then
-    echo "This node has no data,please run jdcnd again and chose the other node!"
+    echo "This node has no data,please run Sercd again and chose the other node!"
     exit 2
   fi
   
@@ -132,11 +132,11 @@ function rebuild() {
         exit
   fi
 
-  ./jdcnd stop
+  ./sercd stop
   tar zxf $Name
   rm $Name
   mv ./$DB ./blockchain.db
-  ./jdcnd start
+  ./sercd start
 }
 
 function version() {
@@ -207,10 +207,10 @@ function upgrade() {
 
   echo "Extracting new package ..."
   tar zxf tmp/$Name -C tmp/
-  extractedDir=`find tmp -maxdepth 1 -type d | grep jdcn |head -n 1`
-  currentVersion=`./jdcnd version`
-  chmod u+x $extractedDir/jdcnd
-  ./jdcnd stop
+  extractedDir=`find tmp -maxdepth 1 -type d | grep serc |head -n 1`
+  currentVersion=`./sercd version`
+  chmod u+x $extractedDir/sercd
+  ./sercd stop
   echo "Copying new files ..."
   for file in `ls $extractedDir`
   do
@@ -220,9 +220,9 @@ function upgrade() {
     fi
   done
   rm -rf $extractedDir tmp/$latestName
-  newVersion=`./jdcnd version`  
+  newVersion=`./sercd version`
   echo "Upgrade to $newVersion done."
-  ./jdcnd start
+  ./sercd start
 }
 
 function enable() {

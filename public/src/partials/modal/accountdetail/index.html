@@ -9,7 +9,7 @@
         <table class="table">
             <tr><td>{{'ADDRESS' | translate}}:</td><td>{{account.address}}</td></tr>
             <tr><td>{{'PUBLIC_KEY' | translate}}:</td><td>{{account.publicKey}}</td></tr>
-            <tr><td>{{'BALANCE' | translate}}:</td><td>{{account.balance  | jdcnFilter}}</td></tr>
+            <tr><td>{{'BALANCE' | translate}}:</td><td>{{account.balance  | sercFilter}}</td></tr>
             <tr ng-show="account.username"><td>{{'DELEGATE_NAME' | translate}}:</td><td>{{account.username}}</td></tr>
         </table>
     </div>

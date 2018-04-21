@@ -173,6 +173,7 @@ function main() {
             process.exit(1);
             return;
         }
+
         verifyGenesisBlock(scope, scope.genesisblock.block);
 
         if (program.execute) {

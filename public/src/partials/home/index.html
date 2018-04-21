@@ -4,8 +4,8 @@
 	<div class="homeinfo">
 		<div class="account">
 			<span>{{'BALANCE' | translate}}</span>
-			<i>{{ userService.balance | jdcnFilter }}</i>
-			<b>JDCN</b>
+			<i>{{ userService.balance | sercFilter }}</i>
+			<b>SERC</b>
 		</div>
 		<div class="account">
 			<span>{{'LATEST_BLOCK_HEIGHT' | translate}}</span><i ng-show="latestBlock.height">{{ latestBlock.height }}</i><i ng-show="!latestBlock.height">Loading...</i>
@@ -39,7 +39,7 @@
 				<td> <i class="level" ng-click="showaccountdetailInfo(i.senderId)">{{i.senderId}}</i></td>
 				<td class="item_accept"> <i class="level" ng-click="showaccountdetailInfo(i.recipientId)">{{i.recipientId || 'SYSTEM' | translate}}</i></td>
 				<td>{{i.timestamp | timestampFilter}}</td>
-				<td>{{i.amount | jdcnFilter}}({{i.fee | jdcnFilter}})</td>
+				<td>{{i.amount | sercFilter}}({{i.fee | sercFilter}})</td>
 				<td>{{i.message}}</td>
 			</tr>
 		</table>

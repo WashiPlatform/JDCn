@@ -1,6 +1,6 @@
 {
-  "name": "jdcn-frontend",
-  "description": "jdcn frontend",
+  "name": "serc-frontend",
+  "description": "service chain frontend",
   "version": "1.0.1",
   "private": true,
   "scripts": {

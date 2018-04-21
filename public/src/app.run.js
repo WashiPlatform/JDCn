@@ -10,11 +10,11 @@ angular.module('serc').run(function ($rootScope, $location, ipCookie, apiService
         }
     });
 
-    var serverUrl = $location.protocol() +"://"+$location.host()+":"+$location.port()||80;
-    if ($location.protocol().toLower == "https" || true){
+    var serverUrl = $location.protocol() + "://" + $location.host() + ":" + $location.port() || 80;
+    if ($location.protocol().toLower == "https" || true) {
         nodeService.staticServer(serverUrl);
     }
-    else{
-        nodeService.dynamicServers($location.protocol() +"://"+$location.host()+":"+$location.port()||80);
+    else {
+        nodeService.dynamicServers($location.protocol() + "://" + $location.host() + ":" + $location.port() || 80);
     }
 });

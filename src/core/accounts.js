@@ -416,7 +416,6 @@ Accounts.prototype.onBind = function (scope) {
 }
 
 // Shared
-
 shared.newAccount = function (req, cb) {
     var ent = Number(req.body.ent)
     if ([128, 256, 384].indexOf(ent) === -1) {

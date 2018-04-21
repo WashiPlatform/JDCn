@@ -16,9 +16,9 @@
 				<div class="circle allMoney">
 					<div class="pagea circle"></div>
 					<div class="text1">{{'TOTAL_EARNINGS' | translate}}</div>
-					<div class="text2"  ng-show="delegate.forged || delegate.forged == 0">{{delegate.forged | jdcnFilter }}</div>
+					<div class="text2"  ng-show="delegate.forged || delegate.forged == 0">{{delegate.forged | sercFilter }}</div>
 					<div class="text2"  ng-show="!delegate.forged && delegate.forged != 0">--</div>
-					<div class="text3">JDCN</div>
+					<div class="text3">SERC</div>
 				</div>
 				<div class="circle rank">
 					<div class="pagea circle">
@@ -67,9 +67,9 @@
 						<td><span ng-show="i.timestamp > 0">{{i.timestamp | timestampFilter}}</span></td>
 						<td><i class="level" ng-click="showdetailInfo(i)">{{i.id}}</i></td>
 						<td><i class="level" ng-click="showdealInfo(i)">{{i.numberOfTransactions}}</i></td>
-						<td>{{i.totalAmount | jdcnFilter}}</td>
-						<td>{{i.totalFee | jdcnFilter}}</td>
-						<td>{{i.reward | jdcnFilter}}</td>
+						<td>{{i.totalAmount | sercFilter}}</td>
+						<td>{{i.totalFee | sercFilter}}</td>
+						<td>{{i.reward | sercFilter}}</td>
 					</tr>
 				</table>
 			</div>

@@ -25,6 +25,7 @@ var moduleNames = [
   'dapps',
   'sql',
   'blocks',
+  'info'
 ];
 
 function getPublicIp() {
@@ -279,7 +280,7 @@ module.exports = function(options, done) {
          */
         res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
         
-        //allow CORS
+        // allow CORS
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Length,  X-Requested-With, Content-Type, Accept, request-node-status");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD, PUT, DELETE");        

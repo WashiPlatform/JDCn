@@ -1,4 +1,4 @@
-# Jdcn Wallet
+# Service Chain Wallet
 
 ## Development Dependencies
 

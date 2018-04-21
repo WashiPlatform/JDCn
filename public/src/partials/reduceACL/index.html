@@ -27,7 +27,7 @@
 
     <button class="sent" ng-click="updateAcl()">{{'SUBMIT' | translate}}</button>
     <div id="comfirmacl" ng-show="comfirmDialog">
-        <p>{{'OPERATION_REQUIRES_FEE' | translate}} {{ reduceacltrs.fee | jdcnFilter}} JDCN</p>
+        <p>{{'OPERATION_REQUIRES_FEE' | translate}} {{ reduceacltrs.fee | sercFilter}} SERC</p>
         <button class="sent" ng-click="comfirmDialogClose()">{{'CANCEL' | translate}}</button>
         <button class="sent" ng-click="comfirmSub()">{{'CONFIRM' | translate}}</button>
     </div>

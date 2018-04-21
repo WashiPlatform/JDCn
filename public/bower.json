@@ -1,15 +1,15 @@
 {
-  "name": "jdcn",
+  "name": "serc",
   "version": "0.0.1",
   "authors": [
     "feisha<hi@waphe.com>"
   ],
-  "description": "jdcn",
+  "description": "service block chain",
   "moduleType": [
     "globals"
   ],
   "keywords": [
-    "jdcn"
+    "serc"
   ],
   "license": "MIT",
   "ignore": [

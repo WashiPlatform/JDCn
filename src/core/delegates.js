@@ -257,7 +257,6 @@ private.attachApi = function () {
   });
 
   if (process.env.DEBUG) {
-
     router.get('/forging/disableAll', function (req, res) {
       self.disableForging();
       return res.json({success: true});
