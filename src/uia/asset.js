@@ -54,7 +54,7 @@ function Asset() {
     if (asset.allowWhitelist !== 0 && asset.allowWhitelist !== 1) return setImmediate(cb, 'Asset allowWhitelist is not valid')
     if (asset.allowBlacklist !== 0 && asset.allowBlacklist !== 1) return setImmediate(cb, 'Asset allowBlacklist is not valid')
 
-    library.model.exists('assets', { name: fullName }, function (err, exists) {
+    library.model.exists('assets', {name: fullName}, function (err, exists) {
       if (err) return cb(err)
       if (exists) return cb('Double register')
       library.model.getIssuerByName(issuerName, ['issuerId'], function (err, issuer) {
@@ -85,7 +85,7 @@ function Asset() {
 
     var strategy = trs.asset.uiaAsset.strategy
     if (strategy) {
-      buffer = Buffer.concat([buffer, ])
+      buffer = Buffer.concat([buffer,])
     }
     return buffer
   }
@@ -182,7 +182,7 @@ function Asset() {
         allowBlacklist: raw.assets_allowBlacklist
       }
 
-      return { uiaAsset: asset }
+      return {uiaAsset: asset}
     }
   }
 
@@ -220,4 +220,4 @@ function Asset() {
   }
 }
 
-module.exports = new Asset
+module.exports = new Asset;

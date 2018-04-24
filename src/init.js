@@ -25,7 +25,8 @@ var moduleNames = [
   'dapps',
   'sql',
   'blocks',
-  'info'
+  'info',
+  'price'
 ];
 
 function getPublicIp() {
@@ -48,7 +49,7 @@ function getPublicIp() {
   return publicIp;
 }
 
-module.exports = function(options, done) {
+module.exports = function (options, done) {
   var modules = [];
   var dbFile = options.dbFile;
   var appConfig = options.appConfig;
@@ -57,7 +58,7 @@ module.exports = function(options, done) {
   if (!appConfig.publicIp) {
     appConfig.publicIp = getPublicIp();
   }
-  
+
   async.auto({
     config: function (cb) {
       cb(null, appConfig);
@@ -161,8 +162,8 @@ module.exports = function(options, done) {
       var compression = require('compression');
       var cors = require('cors');
       var app = express();
-      
-      app.use(compression({ level: 6 }));
+
+      app.use(compression({level: 6}));
       app.use(cors());
       app.options("*", cors());
 
@@ -170,8 +171,8 @@ module.exports = function(options, done) {
       var io = require('socket.io')(server);
 
       /**
-         * SSL
-         */
+       * SSL
+       */
       if (scope.config.ssl.enabled) {
         var privateKey = fs.readFileSync(scope.config.ssl.options.key);
         var certificate = fs.readFileSync(scope.config.ssl.options.cert);
@@ -180,8 +181,8 @@ module.exports = function(options, done) {
           key: privateKey,
           cert: certificate,
           ciphers: "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:"
-                 + "ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:"
-                 + "!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA"
+          + "ECDHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:DHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA256:HIGH:"
+          + "!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!SRP:!CAMELLIA"
         }, app);
 
         var https_io = require('socket.io')(https);
@@ -279,41 +280,41 @@ module.exports = function(options, done) {
          * W3C Candidate Recommendation -> https://www.w3.org/TR/CSP/
          */
         res.setHeader('Content-Security-Policy', "frame-ancestors 'none'");
-        
+
         // allow CORS
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Headers", "Origin, Content-Length,  X-Requested-With, Content-Type, Accept, request-node-status");
-        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD, PUT, DELETE");        
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, HEAD, PUT, DELETE");
 
-        if (req.method == "OPTIONS"){
+        if (req.method == "OPTIONS") {
           res.sendStatus(200);
           scope.logger.debug("Response pre-flight request");
           return;
         }
 
-        var isApiOrPeer = parts.length > 1 && (parts[1] == 'api'|| parts[1] == 'peer') ;
+        var isApiOrPeer = parts.length > 1 && (parts[1] == 'api' || parts[1] == 'peer');
         var whiteList = scope.config.api.access.whiteList;
         var blackList = scope.config.peers.blackList;
 
-        var forbidden = isApiOrPeer && ( 
-            (whiteList.length > 0 && whiteList.indexOf(ip) < 0) ||
-            (blackList.length > 0 && blackList.indexOf(ip) >= 0) );
+        var forbidden = isApiOrPeer && (
+          (whiteList.length > 0 && whiteList.indexOf(ip) < 0) ||
+          (blackList.length > 0 && blackList.indexOf(ip) >= 0));
 
-        if (isApiOrPeer && forbidden){
+        if (isApiOrPeer && forbidden) {
           res.sendStatus(403);
         }
-        else if ( isApiOrPeer && req.headers["request-node-status"] == "yes"){         
+        else if (isApiOrPeer && req.headers["request-node-status"] == "yes") {
           // Add server status info to response header
-          var lastBlock = scope.modules.blocks.getLastBlock();         
-          res.setHeader('Access-Control-Expose-Headers',"node-status");
-          res.setHeader("node-status",JSON.stringify({
+          var lastBlock = scope.modules.blocks.getLastBlock();
+          res.setHeader('Access-Control-Expose-Headers', "node-status");
+          res.setHeader("node-status", JSON.stringify({
             blockHeight: lastBlock.height,
             blockTime: slots.getRealTime(lastBlock.timestamp),
-            blocksBehind: slots.getNextSlot() - (slots.getSlotNumber(lastBlock.timestamp) +1)
+            blocksBehind: slots.getNextSlot() - (slots.getSlotNumber(lastBlock.timestamp) + 1)
           }));
           next();
         }
-        else{
+        else {
           next();
         }
       });
@@ -323,8 +324,8 @@ module.exports = function(options, done) {
 
         if (!err) {
           /**
-             * SSL
-             */
+           * SSL
+           */
           if (scope.config.ssl.enabled) {
             scope.network.https.listen(scope.config.ssl.options.port, scope.config.ssl.options.address, function (err) {
               scope.logger.log("Serc https started: " + scope.config.ssl.options.address + ":" + scope.config.ssl.options.port);
@@ -358,6 +359,7 @@ module.exports = function(options, done) {
           this.emit.apply(this, arguments);
         }
       }
+
       cb(null, new Bus)
     },
 

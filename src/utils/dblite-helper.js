@@ -26,14 +26,14 @@ module.exports.connect = function (connectString, cb) {
 
     // UIA transactions
     "CREATE TABLE IF NOT EXISTS issuers(name VARCHAR(16) NOT NULL PRIMARY KEY, desc VARCHAR(4096) NOT NULL, issuerId VARCHAR(50), transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
-    "CREATE TABLE IF NOT EXISTS assets(name VARCHAR(22) NOT NULL PRIMARY KEY, desc VARCHAR(4096) NOT NULL, maximum VARCHAR(50) NOT NULL, precision TINYINT NOT NULL, strategy TEXT, quantity VARCHAR(50), issuerName VARCHAR(16) NOT NULL, acl TINYINT, writeoff TINYINT, allowWriteoff TINYINT, allowWhitelist TINYINT, allowBlacklist TINYINT, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
+    "CREATE TABLE IF NOT EXISTS assets(name VARCHAR(22) NOT NULL PRIMARY KEY, desc VARCHAR(4096) NOT NULL, maximum VARCHAR(50) NOT NULL, precision TINYINT NOT NULL, strategy TEXT, quantity VARCHAR(50), issuerName VARCHAR(16) NOT NULL, issuePrice DECIMAL(18,2) DEFAULT 0.00, price DECIMAL(18,2) DEFAULT 0.00, acl TINYINT, writeoff TINYINT, allowWriteoff TINYINT, allowWhitelist TINYINT, allowBlacklist TINYINT, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
     "CREATE TABLE IF NOT EXISTS flags(currency VARCHAR(22) NOT NULL, flag TINYINT NOT NULL, flagType TINYINT NOT NULL, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
     "CREATE TABLE IF NOT EXISTS issues(currency VARCHAR(22) NOT NULL, amount VARCHAR(50) NOT NULL, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
     "CREATE TABLE IF NOT EXISTS acls(currency VARCHAR(22) NOT NULL, flag TINYINT NOT NULL, operator CHAR(1) NOT NULL, list TEXT NOT NULL, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
     "CREATE TABLE IF NOT EXISTS transfers(currency VARCHAR(22) NOT NULL, amount VARCHAR(50) NOT NULL, transactionId VARCHAR(64) NOT NULL, FOREIGN KEY(transactionId) REFERENCES trs(id) ON DELETE CASCADE)",
     
     // UIA states
-    "CREATE TABLE IF NOT EXISTS mem_asset_balances(currency VARCHAR(22) NOT NULL, address VARCHAR(64) NOT NULL, balance VARCHAR(50) NOT NULL)",
+    "CREATE TABLE IF NOT EXISTS mem_asset_balances(currency VARCHAR(22) NOT NULL, address VARCHAR(64) NOT NULL, balance VARCHAR(50) NOT NULL, display TINYINT DEFAULT 1)",
     "CREATE TABLE IF NOT EXISTS acl_white(currency VARCHAR(22) NOT NULL, address VARCHAR(50) NOT NULL)",
     "CREATE TABLE IF NOT EXISTS acl_black(currency VARCHAR(22) NOT NULL, address VARCHAR(50) NOT NULL)",
 
@@ -49,6 +49,7 @@ module.exports.connect = function (connectString, cb) {
     "CREATE INDEX IF NOT EXISTS transfers_trs_currency ON transfers(currency)",
     "CREATE INDEX IF NOT EXISTS balance_address on mem_asset_balances(address)",
     "CREATE INDEX IF NOT EXISTS balance_currency on mem_asset_balances(currency)",
+    "CREATE INDEX IF NOT EXISTS balance_display on mem_asset_balances(display)",
     "CREATE INDEX IF NOT EXISTS acl_white_index on acl_white(currency, address)",
     "CREATE INDEX IF NOT EXISTS acl_black_index on acl_black(currency, address)",
     "CREATE INDEX IF NOT EXISTS acl_white_currency on acl_black(currency)",

@@ -11,7 +11,7 @@ angular.module('serc').service('nodeService', function ($http) {
 
     var HTTP_STATUS_OK = 200;
 
-    function AschServer(url){
+    function SercServer(url){
         this.timer = null;
 
         this.clientTimeDrift = 0;
@@ -115,7 +115,7 @@ angular.module('serc').service('nodeService', function ($http) {
         };
     }
 
-    AschServer.compareServer = function(server1, server2){
+    SercServer.compareServer = function(server1, server2){
         var isServer1Avalible = server1.isServerAvalible();
         var isServer2Avalible = server2.isServerAvalible();
 
@@ -154,7 +154,7 @@ angular.module('serc').service('nodeService', function ($http) {
 
     function registerServer(serverUrl){
         if (findServerIndex(serverUrl) < 0){
-            var server = new AschServer(serverUrl);
+            var server = new SercServer(serverUrl);
             server.startCheckStatus();
             servers.push(server);
 
@@ -231,7 +231,7 @@ angular.module('serc').service('nodeService', function ($http) {
 
     function sortServers(serverArray){
         serverArray = serverArray || servers;
-        return serverArray.sort(AschServer.compareServer);
+        return serverArray.sort(SercServer.compareServer);
     }
 
     function clearServers(){

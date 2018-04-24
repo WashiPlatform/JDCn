@@ -23,7 +23,7 @@ class Model {
       condition: condition
     })
     sql.query = sql.query.replace(/"/g, '')
-    this.dbLite.query(sql.query, sql.values, { count: Number }, function (err, rows) {
+    this.dbLite.query(sql.query, sql.values, {count: Number}, function (err, rows) {
       if (err) return cb('Database error: ' + err)
       cb(null, rows[0].count)
     })
@@ -31,7 +31,7 @@ class Model {
 
   getIssuerByName(name, fields, cb) {
     var filter = {
-      condition: { name: name }
+      condition: {name: name}
     }
     this.getIssuers(filter, fields, function (err, issuers) {
       if (err) return cb(err)
@@ -41,7 +41,7 @@ class Model {
 
   getIssuerByAddress(address, fields, cb) {
     var filter = {
-      condition: { issuerId: address }
+      condition: {issuerId: address}
     }
     this.getIssuers(filter, fields, function (err, issuers) {
       if (err) return cb(err)
@@ -96,34 +96,34 @@ class Model {
           'a.issuerName': 'i.name'
         }
       }, {
-          type: 'inner',
-          table: 'trs',
-          alias: 't',
-          on: {
-            'a.transactionId': 't.id'
-          }
-        }, {
-          type: 'inner',
-          table: 'blocks',
-          alias: 'b',
-          on: {
-            't.blockId': 'b.id'
-          }
-        }],
+        type: 'inner',
+        table: 'trs',
+        alias: 't',
+        on: {
+          'a.transactionId': 't.id'
+        }
+      }, {
+        type: 'inner',
+        table: 'blocks',
+        alias: 'b',
+        on: {
+          't.blockId': 'b.id'
+        }
+      }],
       fields: [
-        { 'a.name': 'name' },
-        { 'a.desc': 'desc' },
-        { 'a.maximum': 'maximum' },
-        { 'a.precision': 'precision' },
-        { 'a.strategy': 'strategy' },
-        { 'a.quantity': 'quantity' },
-        { 'b.height': 'height' },
-        { 'i.issuerId': 'issuerId' },
-        { 'a.acl': 'acl' },
-        { 'a.writeoff': 'writeoff' },
-        { 'a.allowWriteoff': 'allowWriteoff' },
-        { 'a.allowWhitelist': 'allowWhitelist' },
-        { 'a.allowBlacklist': 'allowBlacklist' }
+        {'a.name': 'name'},
+        {'a.desc': 'desc'},
+        {'a.maximum': 'maximum'},
+        {'a.precision': 'precision'},
+        {'a.strategy': 'strategy'},
+        {'a.quantity': 'quantity'},
+        {'b.height': 'height'},
+        {'i.issuerId': 'issuerId'},
+        {'a.acl': 'acl'},
+        {'a.writeoff': 'writeoff'},
+        {'a.allowWriteoff': 'allowWriteoff'},
+        {'a.allowWhitelist': 'allowWhitelist'},
+        {'a.allowBlacklist': 'allowBlacklist'}
       ]
     })
     var fieldConv = {
@@ -168,14 +168,14 @@ class Model {
 
   addAssetQuantity(currency, amount, cb) {
     var sql = 'select quantity from assets where name=$name'
-    this.dbLite.query(sql, { name: currency }, { quantity: String }, (err, rows) => {
+    this.dbLite.query(sql, {name: currency}, {quantity: String}, (err, rows) => {
       if (err) return cb('Database error when query asset: ' + err)
       if (!rows || !rows.length) return cb('Asset not exists')
       var quantity = rows[0].quantity
       var sql = jsonSql.build({
         type: 'update',
         table: 'assets',
-        condition: { name: currency },
+        condition: {name: currency},
         modifier: {
           quantity: bignum(quantity).plus(amount).toString()
         }
@@ -193,7 +193,7 @@ class Model {
       address: address,
       currency: currency
     }
-    this.dbLite.query(sql, condition, { balance: String }, (err, rows) => {
+    this.dbLite.query(sql, condition, {balance: String}, (err, rows) => {
       if (err) return cb('Databae error when query asset balance: ' + err)
       var balance = '0'
       var balanceExist = false
@@ -212,7 +212,7 @@ class Model {
       if (balanceExist) {
         statement.type = 'update'
         statement.condition = condition
-        statement.modifier = { balance: newBalance.toString() }
+        statement.modifier = {balance: newBalance.toString()}
       } else {
         statement.type = 'insert'
         statement.values = {
@@ -257,7 +257,7 @@ class Model {
       limit: filter.limit,
       offset: filter.offset
     })
-    this.dbLite.query(sql.query, sql.values, { address: String }, cb)
+    this.dbLite.query(sql.query, sql.values, {address: String}, cb)
   }
 
   addAssetAcl(table, currency, list, cb) {
@@ -283,8 +283,8 @@ class Model {
       type: 'remove',
       table: table,
       condition: [
-        { currency: currency },
-        { address: { $in: list } }
+        {currency: currency},
+        {address: {$in: list}}
       ]
     })
     this.dbLite.query(sql.query, sql.values, cb)
@@ -302,6 +302,69 @@ class Model {
       balance: String
     }
     this.dbLite.query(sql.query, sql.values, fieldConv, cb)
+  }
+
+  /**
+   * 获取用户资产列表
+   * @param address
+   * @param filter
+   * @param cb
+   */
+  getAccountAssets(address, filter, cb) {
+    var condition = {
+      address: address
+    }
+    var limit
+    var offset
+    if (typeof filter === 'string') {
+      condition.currency = filter
+    } else {
+      limit = filter.limit
+      offset = filter.offset
+    }
+    var sql = jsonSql.build({
+      type: 'select',
+      condition: condition,
+      limit: limit,
+      offset: offset,
+      table: 'mem_asset_balances',
+      alias: 'b',
+      join: [
+        {
+          type: 'inner',
+          table: 'assets',
+          alias: 'a',
+          on: {
+            'a.name': 'b.currency'
+          }
+        }
+      ],
+      fields: {
+        'b.currency': 'currency',
+        'b.balance': 'balance',
+        'a.price': 'price',
+        'a.precision': 'precision'
+      }
+    });
+    var fieldConv = {
+      currency: String,
+      balance: String,
+      price: String,
+      precision: Number,
+    };
+    this.dbLite.query(sql.query, sql.values, fieldConv, function (err, rows) {
+      if (err) return cb('Database error: ' + err)
+      // for (let i = 0; i < rows.length; ++i) {
+      //   // let precision = rows[i].precision
+      //   // rows[i].currency = bignum(rows[i].maximum).toString(10)
+      //   // rows[i].maximumShow = amountHelper.calcRealAmount(rows[i].maximum, precision)
+      //   // rows[i].quantity = bignum(rows[i].quantity).toString(10)
+      //   // rows[i].quantityShow = amountHelper.calcRealAmount(rows[i].quantity, precision)
+      //   // rows[i].balance = bignum(rows[i].balance).toString(10)
+      //   // rows[i].balanceShow = amountHelper.calcRealAmount(rows[i].balance, precision)
+      // }
+      cb(null, rows)
+    })
   }
 
   getAccountBalances(address, filter, cb) {
@@ -392,7 +455,7 @@ class Model {
     this.dbLite.query(sql.query, sql.values, function (err, rows) {
       if (err) return cb('Database error: ' + err)
       if (!rows || !rows.length) return cb(null, '0')
-      return cb(null, { currency: currency, balance: rows[0][0] })
+      return cb(null, {currency: currency, balance: rows[0][0]})
     })
   }
 
@@ -492,7 +555,7 @@ class Model {
   }
 
   getDAppById(id, cb) {
-    this.getDApps({ transactionId: id }, function (err, dapps) {
+    this.getDApps({transactionId: id}, function (err, dapps) {
       if (err) return cb(err)
       if (!dapps || !dapps.length) return cb('DApp not found')
       return cb(null, dapps[0])
@@ -500,14 +563,14 @@ class Model {
   }
 
   getDAppsByIds(ids, cb) {
-    this.getDApps({ transactionId: { $in: ids } }, function (err, dapps) {
+    this.getDApps({transactionId: {$in: ids}}, function (err, dapps) {
       if (err) return cb(err)
       return cb(null, dapps)
     })
   }
 
   getDAppByName(name, cb) {
-    this.getDApps({ name: name }, function (err, dapps) {
+    this.getDApps({name: name}, function (err, dapps) {
       if (err) return cb(err)
       let dapp = null
       if (dapps && dapps.length) dapp = dapps[0]

@@ -59,6 +59,7 @@ private.attachApi = function () {
     'get /assets': 'getAssets',
     'get /assets/:name': 'getAsset',
     'get /assets/:name/acl/:flag': 'getAssetAcl',
+    'get /accountAssets/:address': 'getAccountAssets',
     'get /balances/:address': 'getBalances',
     'get /balances/:address/:currency': 'getBalance',
     'get /transactions/my/:address/': 'getMyTransactions',
@@ -428,6 +429,50 @@ shared.getAssetAcl = function (req, cb) {
   })
 }
 
+shared.getAccountAssets = function (req, cb) {
+  if (!req.params || !addressHelper.isAddress(req.params.address)) {
+    return cb('Invalid address')
+  }
+  var query = req.body
+  library.scheme.validate(query, {
+    type: 'object',
+    properties: {
+      limit: {
+        type: 'integer',
+        minimum: 0,
+        maximum: 100
+      },
+      offset: {
+        type: 'integer',
+        minimum: 0
+      }
+    }
+  }, function (err) {
+    if (err) return cb('Invalid parameters: ' + err[0])
+
+    var condition = {
+      address: req.params.address
+    }
+    library.model.count('mem_asset_balances', condition, function (err, count) {
+      if (err) return cb('Failed to get count: ' + err)
+
+      var filter = {
+        limit: query.limit,
+        offset: query.offset
+      }
+
+      library.model.getAccountAssets(req.params.address, filter, function (err, results) {
+        if (err) return cb('Failed to get balances: ' + err)
+
+        cb(null, {
+          balances: results,
+          count: count
+        })
+      });
+    })
+  })
+}
+
 shared.getBalances = function (req, cb) {
   if (!req.params || !addressHelper.isAddress(req.params.address)) {
     return cb('Invalid address')
@@ -459,6 +504,7 @@ shared.getBalances = function (req, cb) {
         limit: query.limit,
         offset: query.offset
       }
+
       library.model.getAccountBalances(req.params.address, filter, function (err, results) {
         if (err) return cb('Failed to get balances: ' + err)
 
