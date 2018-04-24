@@ -49,7 +49,7 @@ private.attachApi = function () {
 
   router.use(function (req, res, next) {
     if (modules) return next()
-    res.status(500).send({ success: false, error: 'Blockchain is loading' })
+    res.status(500).send({success: false, error: 'Blockchain is loading'})
   })
 
   router.map(shared, {
@@ -60,8 +60,11 @@ private.attachApi = function () {
     'get /assets/:name': 'getAsset',
     'get /assets/:name/acl/:flag': 'getAssetAcl',
     'get /accountAssets/:address': 'getAccountAssets',
+    'get /accountAsset/:address/:currency': 'getAccountAsset',
+
     'get /balances/:address': 'getBalances',
     'get /balances/:address/:currency': 'getBalance',
+
     'get /transactions/my/:address/': 'getMyTransactions',
     'get /transactions/my/:address/:currency': 'getMyTransactions',
     'get /transactions/:currency': 'getTransactions',
@@ -78,14 +81,14 @@ private.attachApi = function () {
   })
 
   router.use(function (req, res, next) {
-    res.status(500).send({ success: false, error: 'API endpoint not found' })
+    res.status(500).send({success: false, error: 'API endpoint not found'})
   })
 
   library.network.app.use('/api/uia', router)
   library.network.app.use(function (err, req, res, next) {
     if (!err) return next()
     library.logger.error(req.url, err)
-    res.status(500).send({ success: false, error: err.toString() })
+    res.status(500).send({success: false, error: err.toString()})
   })
 }
 
@@ -112,7 +115,7 @@ private.queryTransactions = function (query, cb) {
   modules.transactions[func](param, function (err, data) {
     if (err) return cb('Failed to get transactions: ' + err)
 
-    if (!list) data = { transactions: [data] }
+    if (!list) data = {transactions: [data]}
     var sqls = []
     var typeToTable = {
       9: {
@@ -213,7 +216,7 @@ shared.getFee = function (req, cb) {
   // FIXME(qingfeng)
   fee = 5 * constants.fixedPoint
 
-  cb(null, { fee: fee })
+  cb(null, {fee: fee})
 }
 
 shared.getIssuers = function (req, cb) {
@@ -256,7 +259,7 @@ shared.getIssuerByAddress = function (req, cb) {
   library.model.getIssuerByAddress(req.params.address, ['name', 'desc'], function (err, issuer) {
     if (err) return cb('Database error: ' + err)
     if (!issuer) return cb('Issuer not found')
-    cb(null, { issuer: issuer })
+    cb(null, {issuer: issuer})
   })
 }
 
@@ -281,7 +284,7 @@ shared.getIssuer = function (req, cb) {
 
     library.model.getIssuerByName(query.name, ['name', 'desc', 'issuerId'], function (err, issuer) {
       if (!issuer || err) return cb('Issuer not found')
-      cb(null, { issuer: issuer })
+      cb(null, {issuer: issuer})
     })
   })
 }
@@ -307,11 +310,11 @@ shared.getIssuerAssets = function (req, cb) {
   }, function (err) {
     if (err) return cb('Invalid parameters: ' + err[0])
 
-    library.model.count('assets', { issuerName: req.params.name }, function (err, count) {
+    library.model.count('assets', {issuerName: req.params.name}, function (err, count) {
       if (err) return cb('Failed to get count: ' + err)
 
       var filter = {
-        condition: { issuerName: req.params.name },
+        condition: {issuerName: req.params.name},
         limit: query.limit,
         offset: query.offset
       }
@@ -382,7 +385,7 @@ shared.getAsset = function (req, cb) {
     library.model.getAssetByName(query.name, function (err, asset) {
       if (err) return cb('Failed to get asset: ' + err)
       if (!asset) return cb('Asset not found')
-      cb(null, { asset: asset })
+      cb(null, {asset: asset})
     })
   })
 }
@@ -410,7 +413,7 @@ shared.getAssetAcl = function (req, cb) {
     if (err) return cb('Invalid parameters: ' + err[0])
 
     var table = flagsHelper.getAclTable(query.flag)
-    library.model.count(table, { currency: query.name }, function (err, count) {
+    library.model.count(table, {currency: query.name}, function (err, count) {
       if (err) return cb('Failed to get count: ' + err)
 
       var filter = {
@@ -465,13 +468,25 @@ shared.getAccountAssets = function (req, cb) {
         if (err) return cb('Failed to get balances: ' + err)
 
         cb(null, {
-          balances: results,
+          assets: results,
           count: count
         })
       });
     })
   })
-}
+};
+
+shared.getAccountAsset = function (req, cb) {
+  if (!req.params) return cb('Invalid parameters')
+  if (!addressHelper.isAddress(req.params.address)) return cb('Invalid address')
+  if (!req.params.currency || req.params.currency.length > 22) return cb('Invalid currency')
+
+  library.model.getAccountAssets(req.params.address, req.params.currency, function (err, results) {
+    if (err) return cb('Failed to get balance: ' + err)
+    if (!results || results.length == 0) return cb('Balance info not found')
+    cb(null, {asset: results[0]})
+  })
+};
 
 shared.getBalances = function (req, cb) {
   if (!req.params || !addressHelper.isAddress(req.params.address)) {
@@ -515,7 +530,7 @@ shared.getBalances = function (req, cb) {
       })
     })
   })
-}
+};
 
 shared.getBalance = function (req, cb) {
   if (!req.params) return cb('Invalid parameters')
@@ -525,9 +540,9 @@ shared.getBalance = function (req, cb) {
   library.model.getAccountBalances(req.params.address, req.params.currency, function (err, results) {
     if (err) return cb('Failed to get balance: ' + err)
     if (!results || results.length == 0) return cb('Balance info not found')
-    cb(null, { balance: results[0] })
+    cb(null, {balance: results[0]})
   })
-}
+};
 
 shared.getMyTransactions = function (req, cb) {
   if (!req.params || !addressHelper.isAddress(req.params.address)) {
@@ -589,7 +604,7 @@ shared.getTransactions = function (req, cb) {
     private.queryTransactions(query, function (err, data) {
       if (err) return cb(err)
       if (single) {
-        return cb(null, { transaction: data.transactions[0] })
+        return cb(null, {transaction: data.transactions[0]})
       } else {
         return cb(null, data)
       }
@@ -670,7 +685,7 @@ shared.transferAsset = function (req, cb) {
 
     library.balancesSequence.add(function (cb) {
       if (body.multisigAccountPublicKey && body.multisigAccountPublicKey != keypair.publicKey.toString('hex')) {
-        modules.accounts.getAccount({ publicKey: body.multisigAccountPublicKey }, function (err, account) {
+        modules.accounts.getAccount({publicKey: body.multisigAccountPublicKey}, function (err, account) {
           if (err) {
             return cb(err.toString());
           }
@@ -687,7 +702,7 @@ shared.transferAsset = function (req, cb) {
             return cb("Account does not belong to multisignature group");
           }
 
-          modules.accounts.getAccount({ publicKey: keypair.publicKey }, function (err, requester) {
+          modules.accounts.getAccount({publicKey: keypair.publicKey}, function (err, requester) {
             if (err) {
               return cb(err.toString());
             }
@@ -730,7 +745,7 @@ shared.transferAsset = function (req, cb) {
           });
         });
       } else {
-        modules.accounts.getAccount({ publicKey: keypair.publicKey.toString('hex') }, function (err, account) {
+        modules.accounts.getAccount({publicKey: keypair.publicKey.toString('hex')}, function (err, account) {
           if (err) {
             return cb(err.toString());
           }
@@ -771,7 +786,7 @@ shared.transferAsset = function (req, cb) {
         return cb(err.toString());
       }
 
-      cb(null, { transactionId: transaction[0].id });
+      cb(null, {transactionId: transaction[0].id});
     });
   });
 }
