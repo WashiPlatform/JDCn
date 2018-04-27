@@ -3,6 +3,6 @@
  */
 angular.module('serc').filter('timestampFilter', function($filter) {
     return function (timestamp) {
-        return AschJS.utils.format.fullTimestamp(timestamp);
+        return SercJS.utils.format.fullTimestamp(timestamp);
     }
 });

@@ -11,7 +11,7 @@ angular.module('serc').controller('assigneeCtrl', function ($scope, $rootScope, 
     };
     // 重制create
     $scope.createTransaction = function () {
-        return AschJS.delegate.createDelegate($scope.userName, userService.secret, $scope.secondpassword)
+        return SercJS.delegate.createDelegate($scope.userName, userService.secret, $scope.secondpassword)
     }
     $scope.nextstep = function () {
         var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;

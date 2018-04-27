@@ -24,7 +24,7 @@ angular.module('serc').controller('addaclCtrl', function ($scope, $rootScope, ap
         if (!userService.secondPublicKey) {
             $scope.secondPassword = '';
         }
-        return AschJS.uia.createAcl(currency, operator, flag, list, userService.secret, $scope.secondPassword);        
+        return SercJS.uia.createAcl(currency, operator, flag, list, userService.secret, $scope.secondPassword);
     }
     $scope.comfirmSub = function () {
         postSerivice.retryPost($scope.createTransaction, function(err, res){

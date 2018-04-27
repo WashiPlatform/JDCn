@@ -59,8 +59,17 @@ private.attachApi = function () {
     'get /assets': 'getAssets',
     'get /assets/:name': 'getAsset',
     'get /assets/:name/acl/:flag': 'getAssetAcl',
-    'get /accountAssets/:address': 'getAccountAssets',
-    'get /accountAsset/:address/:currency': 'getAccountAsset',
+
+    // limgin added
+    'get /assets/list': 'getAssets',
+    'get /assets/info/:name': 'getAsset',
+    'get /assets/acl/:name/:flag': 'getAssetAcl',
+    'get /user/assets/:address': 'getAccountAssets',
+    'get /user/asset/:address/:currency': 'getAccountAsset',
+
+    'get /asset/transactions/:address/': 'getMyTransactions',
+    // 'get /asset/transactions/:address/:currency': 'getMyTransactions',
+
 
     'get /balances/:address': 'getBalances',
     'get /balances/:address/:currency': 'getBalance',

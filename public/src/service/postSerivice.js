@@ -13,7 +13,7 @@ angular.module('serc').service('postSerivice', function ($http, $translate, $roo
         return $http(req);
     }
     this.retryPostImp = function (funcCreate, timeAdjust, countNum, cb) {
-        AschJS.options.set('clientDriftSeconds', timeAdjust)
+        SercJS.options.set('clientDriftSeconds', timeAdjust)
         var trs = funcCreate()
         that.post(trs).success(function (res) {
             if (/timestamp/.test(res.error)) {

@@ -124,7 +124,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
     if (!userService.secondPublicKey) {
       $scope.rpsecondPassword = '';
     }
-    $scope.publishtrs = AschJS.uia.createIssuer(name, desc, userService.secret, $scope.rpsecondPassword);
+    $scope.publishtrs = SercJS.uia.createIssuer(name, desc, userService.secret, $scope.rpsecondPassword);
     $scope.comfirmDialog = true;
     $scope.dialogNUM = 1;
     $rootScope.isBodyMask = true;
@@ -175,7 +175,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
     var allowWriteoff = $scope.selectedAllowWriteoff ? Number($scope.selectedAllowWriteoff.key) : 0
     var allowWhitelist = $scope.selectedAllowWhitelist ? Number($scope.selectedAllowWhitelist.key) : 0
     var allowBlacklist = $scope.selectedAllowBlacklist ? Number($scope.selectedAllowBlacklist.key) : 0
-    $scope.assetTrs = AschJS.uia.createAsset(String(name), String(desc), String(realMaximum), precision, strategy, allowWriteoff, allowWhitelist, allowBlacklist, userService.secret, $scope.rasecondPassword);
+    $scope.assetTrs = SercJS.uia.createAsset(String(name), String(desc), String(realMaximum), precision, strategy, allowWriteoff, allowWhitelist, allowBlacklist, userService.secret, $scope.rasecondPassword);
     $scope.dialogNUM = 2;
     $scope.comfirmDialog = true;
     $rootScope.isBodyMask = true;
@@ -272,7 +272,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
     if (!userService.secondPublicKey) {
       $scope.wosecondPassword = '';
     }
-    var transaction = AschJS.uia.createFlags(currency, flagType, flag, userService.secret, $scope.wosecondPassword);
+    var transaction = SercJS.uia.createFlags(currency, flagType, flag, userService.secret, $scope.wosecondPassword);
     postSerivice.writeoff(transaction).success(function (res) {
       if (res.success == true) {
         $scope.wosecondPassword = '';
@@ -311,7 +311,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
       return toastError('您输入的发行数额不正确');
     }
     var realAmount = $scope.dealBigNumber(parseInt($scope.amount) * Math.pow(10, $scope.currentAsset.precision));
-    var trs = AschJS.uia.createIssue($scope.myPublishmoneyName, String(realAmount), userService.secret, $scope.pbsecondPassword);
+    var trs = SercJS.uia.createIssue($scope.myPublishmoneyName, String(realAmount), userService.secret, $scope.pbsecondPassword);
     postSerivice.writeoff(trs).success(function (res) {
       if (res.success == true) {
         $scope.pbsecondPassword = '';
@@ -357,7 +357,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
     if (!userService.secondPublicKey) {
       $scope.setsecondPassword = '';
     }
-    var trs = AschJS.uia.createFlags(currency, flagType, flag, userService.secret, $scope.setsecondPassword);
+    var trs = SercJS.uia.createFlags(currency, flagType, flag, userService.secret, $scope.setsecondPassword);
     postSerivice.writeoff(trs).success(function (res) {
       if (res.success == true) {
         $scope.setsecondPassword = '';

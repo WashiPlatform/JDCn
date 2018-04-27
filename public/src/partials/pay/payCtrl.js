@@ -12,7 +12,7 @@ angular.module('serc').controller('payCtrl', function ($scope, $rootScope, $filt
     $scope.calculateFee = function () {
         if ($scope.amount && Number($scope.amount) > 0) {
             var amount = parseFloat(($scope.amount * 100000000).toFixed(0));
-            var fee = AschJS.transaction.calculateFee(amount);
+            var fee = SercJS.transaction.calculateFee(amount);
             $scope.fee = $filter('sercFilter')(fee);
         }
     }
@@ -22,10 +22,10 @@ angular.module('serc').controller('payCtrl', function ($scope, $rootScope, $filt
         var message = $scope.message;
 
         if(!$rootScope.currencyName){
-            return AschJS.transaction.createTransaction(String($scope.fromto), amount, message, userService.secret, $scope.secondPassword);
+            return SercJS.transaction.createTransaction(String($scope.fromto), amount, message, userService.secret, $scope.secondPassword);
         } else {
             amount = ($scope.amount*Math.pow(10, $rootScope.precision)).toFixed(0);
-            return AschJS.uia.createTransfer(String($rootScope.currencyName), amount, String($scope.fromto), message, userService.secret, $scope.secondPassword)
+            return SercJS.uia.createTransfer(String($rootScope.currencyName), amount, String($scope.fromto), message, userService.secret, $scope.secondPassword)
         }
     }
     $scope.sentMsg = function () {
@@ -66,10 +66,10 @@ angular.module('serc').controller('payCtrl', function ($scope, $rootScope, $filt
                 toastError($translate.instant('ERR_BALANCE_NOT_ENOUGH'));
                 return false;
             }
-            //transaction = AschJS.transaction.createTransaction(String($scope.fromto), amount, message, userService.secret, $scope.secondPassword);
+            //transaction = SercJS.transaction.createTransaction(String($scope.fromto), amount, message, userService.secret, $scope.secondPassword);
         } else {
             amount = ($scope.amount*Math.pow(10, $rootScope.precision)).toFixed(0);
-            //transaction = AschJS.uia.createTransfer(String($rootScope.currencyName), amount, String($scope.fromto), message, userService.secret, $scope.secondPassword)
+            //transaction = SercJS.uia.createTransfer(String($rootScope.currencyName), amount, String($scope.fromto), message, userService.secret, $scope.secondPassword)
         }
         $scope.isSendSuccess = false;
         postSerivice.retryPost($scope.createTransaction, function(err, res) {

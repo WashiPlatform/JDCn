@@ -3,6 +3,6 @@ angular.module('serc').filter('timeAgoFilter', function($filter) {
 		if (fullTime) {
 			return $filter('timestampFilter')(time);
 		}
-		return AschJS.utils.format.timeAgo(time);
+		return SercJS.utils.format.timeAgo(time);
 	}
 });

@@ -9,7 +9,7 @@ angular.module('serc').controller('votetoCtrl', function ($scope, $rootScope, ap
     $scope.userService = userService;
     // 重制create
     $scope.createTransaction = function() {
-        return AschJS.vote.createVote($rootScope.voteContent, userService.secret, $scope.secondpassword);
+        return SercJS.vote.createVote($rootScope.voteContent, userService.secret, $scope.secondpassword);
     }
     $scope.checkvoteto = function () {
         var reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;

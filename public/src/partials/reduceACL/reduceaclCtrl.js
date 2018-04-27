@@ -20,7 +20,7 @@ angular.module('serc').controller('reduceaclCtrl', function ($scope, $rootScope,
         if (!userService.secondPublicKey) {
             $scope.secondPassword = '';
         }
-        return AschJS.uia.createAcl(currency, operator, flag, list, userService.secret, $scope.secondPassword);
+        return SercJS.uia.createAcl(currency, operator, flag, list, userService.secret, $scope.secondPassword);
     }
     $rootScope.checkdelitem = {};
     $scope.checkitem = function (i) {

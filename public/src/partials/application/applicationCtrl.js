@@ -134,11 +134,11 @@ angular.module('serc').controller('applicationCtrl', function ($scope, $rootScop
   $scope.createTransaction = function () {
     if ($scope.currency.value == 'SERC') {
       var amount = parseFloat(($scope.amount * 100000000).toFixed(0));
-      return AschJS.transfer.createInTransfer($scope.depositedDapp.transactionId, $scope.currency.value, amount, userService.secret, $scope.secondPassword);
+      return SercJS.transfer.createInTransfer($scope.depositedDapp.transactionId, $scope.currency.value, amount, userService.secret, $scope.secondPassword);
     } else {
       var precisionSpecial = $scope.precisionMap[$scope.currency.value];
       var amount = parseFloat(($scope.amount * (Math.pow( 10, precisionSpecial))).toFixed(0));
-      return AschJS.transfer.createInTransfer($scope.depositedDapp.transactionId, $scope.currency.value, amount, userService.secret, $scope.secondPassword);
+      return SercJS.transfer.createInTransfer($scope.depositedDapp.transactionId, $scope.currency.value, amount, userService.secret, $scope.secondPassword);
     }
   }
 	$scope.sentMsg = function () {

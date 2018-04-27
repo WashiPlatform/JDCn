@@ -8,7 +8,7 @@ angular.module('serc').controller('deletevoteCtrl', function ($scope, $rootScope
     };
     // 重制create
     $scope.createTransaction = function () {
-        return AschJS.vote.createVote($rootScope.deletevoteContent, userService.secret, $scope.secondpassword)
+        return SercJS.vote.createVote($rootScope.deletevoteContent, userService.secret, $scope.secondpassword)
     }
 
     $scope.checkvoteto = function (params) {

@@ -37,7 +37,7 @@ angular.module('serc').controller('loginCtrl', function ($scope, $rootScope, api
 		$rootScope.checkpwd = false;
 		var code = new Mnemonic(Mnemonic.Words.ENGLISH);
 		$scope.newsecret = code.toString();
-		newpublicKey = AschJS.crypto.getKeys($scope.newsecret).publicKey;
+		newpublicKey = SercJS.crypto.getKeys($scope.newsecret).publicKey;
 		$rootScope.newpublicKey = newpublicKey
 	};
 
@@ -104,7 +104,7 @@ angular.module('serc').controller('loginCtrl', function ($scope, $rootScope, api
 	}
 	$scope.saveTxt = function (filename) {
 		var text = $scope.newsecret.trim();
-		var address = AschJS.crypto.getAddress(newpublicKey);
+		var address = SercJS.crypto.getAddress(newpublicKey);
 		txt = 'secret:' + '\r\n' + text + '\r\n\r\n' + 'address:' + '\r\n' + address + '\r\n';
 		var link = document.createElement("a");
 		link.setAttribute("target", "_blank");
@@ -135,7 +135,7 @@ angular.module('serc').controller('loginCtrl', function ($scope, $rootScope, api
 		if (!Mnemonic.isValid($scope.secret)) {
 			return toastError($translate.instant('ERR_VIOLATE_BIP39'));
 		}
-		var publicKey = AschJS.crypto.getKeys($scope.secret).publicKey;
+		var publicKey = SercJS.crypto.getKeys($scope.secret).publicKey;
 		// 增加root qrstr属性git
 		$rootScope.qrstr = $scope.secret;
 		$rootScope.publickey = publicKey;

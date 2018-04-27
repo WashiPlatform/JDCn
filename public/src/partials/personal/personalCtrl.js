@@ -102,12 +102,12 @@ angular.module('serc').controller('personalCtrl', function ($scope, $rootScope, 
 
 	// 两方重制create
 	$scope.createTrsPsd = function() {
-		return AschJS.signature.createSignature(userService.secret, $scope.secondpassword);
+		return SercJS.signature.createSignature(userService.secret, $scope.secondpassword);
 	}
 
 	$scope.createTrsLok = function() {
 		var lockHeight = Number($scope.block_number);
-		return AschJS.transaction.createLock(lockHeight, userService.secret, $scope.secondpassword);
+		return SercJS.transaction.createLock(lockHeight, userService.secret, $scope.secondpassword);
 	}
 
 	$scope.setPassWord = function () {
