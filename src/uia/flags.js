@@ -3,6 +3,7 @@ var async = require('async')
 var bignum = require('bignumber')
 var ByteBuffer = require('bytebuffer')
 var flagsHelper = require('./flags-helper')
+var SercJS = require('serc-js');
 
 function Flags() {
   this.create = function (data, trs) {
@@ -17,7 +18,8 @@ function Flags() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return library.base.block.calculateFee()
+    return SercJS.constants.fees.flag;
+    // return library.base.block.calculateFee()
   }
 
   this.verify = function (trs, sender, cb) {
@@ -33,7 +35,7 @@ function Flags() {
       if (!result) return cb('Asset not exists')
 
       if (result.issuerId !== sender.address) return cb('Permission not allowed')
-      
+
       if (result.writeoff) return cb('Asset already writeoff')
 
       if (!result.allowWriteoff && asset.flagType === 2) return cb('Writeoff not allowed')
@@ -121,7 +123,7 @@ function Flags() {
         flag: raw.flags_flag
       }
 
-      return { uiaFlags: asset }
+      return {uiaFlags: asset}
     }
   }
 

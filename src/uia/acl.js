@@ -5,6 +5,7 @@ var ByteBuffer = require('bytebuffer')
 var _ = require('lodash')
 var flagsHelper = require('./flags-helper')
 var addressHelper = require('../utils/address.js')
+var SercJS = require('serc-js');
 
 function Acl() {
   this.create = function (data, trs) {
@@ -20,7 +21,8 @@ function Acl() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return 2 * library.base.block.calculateFee()
+    return SercJS.constants.fees.acl;
+    // return 2 * library.base.block.calculateFee()
   }
 
   this.verify = function (trs, sender, cb) {
@@ -48,12 +50,12 @@ function Acl() {
       // if (result.acl != asset.flag) return cb('Current flag not match')
 
       if (result.allowWhitelist === 0 && asset.flag === 1) return cb('Whitelist not allowed')
-      if (result.allowBlacklist === 0 && asset.flag === 0) return cb('Blacklist not allowed') 
+      if (result.allowBlacklist === 0 && asset.flag === 0) return cb('Blacklist not allowed')
 
       var table = flagsHelper.getAclTable(asset.flag)
       var condition = [
-        { currency: asset.currency },
-        { address: { $in: asset.list } }
+        {currency: asset.currency},
+        {address: {$in: asset.list}}
       ]
       if (asset.operator == '+') {
         library.model.exists(table, condition, function (err, exists) {
@@ -165,7 +167,7 @@ function Acl() {
         list: raw.acls_list.split(',')
       }
 
-      return { uiaAcl: asset }
+      return {uiaAcl: asset}
     }
   }
 

@@ -7,6 +7,7 @@ var constants = require('../utils/constants.js');
 var addressHelper = require('../utils/address.js');
 
 var genesisblock = null;
+
 // Constructor
 function Block(scope, cb) {
   this.scope = scope;
@@ -19,7 +20,7 @@ var private = {};
 private.blockStatus = new BlockStatus();
 private.getAddressByPublicKey = function (publicKey) {
   // liming 20180323 从公钥获取 Base58 地址
-    return addressHelper.generateBase58CheckAddress(publicKey);
+  return addressHelper.generateBase58CheckAddress(publicKey);
   // var publicKeyHash = crypto.createHash('sha256').update(publicKey, 'hex').digest();
   // var temp = new Buffer(8);
   // for (var i = 0; i < 8; i++) {
@@ -124,7 +125,7 @@ Block.prototype.getBytes = function (block) {
       }
     } else {
       if (block.previousBlock) {
-        var pb = bignum(block.previousBlock).toBuffer({ size: '8' });
+        var pb = bignum(block.previousBlock).toBuffer({size: '8'});
 
         for (var i = 0; i < 8; i++) {
           bb.writeByte(pb[i]);
@@ -296,17 +297,19 @@ Block.prototype.objectNormalize = function (block) {
 }
 
 Block.prototype.getId = function (block) {
-  if (global.featureSwitch.enableLongId) {
-    return this.getId2(block)
-  }
-  var hash = crypto.createHash('sha256').update(this.getBytes(block)).digest();
-  var temp = new Buffer(8);
-  for (var i = 0; i < 8; i++) {
-    temp[i] = hash[7 - i];
-  }
-
-  var id = bignum.fromBuffer(temp).toString();
-  return id;
+  var hash = crypto.createHash('sha256').update(this.getBytes(block)).digest()
+  return hash.toString('hex')
+  // if (global.featureSwitch.enableLongId) {
+  //   return this.getId2(block)
+  // }
+  // var hash = crypto.createHash('sha256').update(this.getBytes(block)).digest();
+  // var temp = new Buffer(8);
+  // for (var i = 0; i < 8; i++) {
+  //   temp[i] = hash[7 - i];
+  // }
+  //
+  // var id = bignum.fromBuffer(temp).toString();
+  // return id;
 }
 
 Block.prototype.getId2 = function (block) {
@@ -319,14 +322,14 @@ Block.prototype.getHash = function (block) {
 }
 
 Block.prototype.calculateFee = function (block) {
-  return 10000000;
+  return 100000000;
 }
 
 Block.prototype.dbRead = function (raw) {
   if (!raw.b_id) {
     return null
   } else {
-    
+
     var block = {
       id: raw.b_id,
       version: parseInt(raw.b_version),

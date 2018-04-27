@@ -3,6 +3,7 @@ var async = require('async')
 var bignum = require('bignumber')
 var amountHelper = require('../utils/amount.js')
 var constants = require('../utils/constants.js')
+var SercJS = require('serc-js');
 
 function Asset() {
   this.create = function (data, trs) {
@@ -25,7 +26,8 @@ function Asset() {
   this.calculateFee = function (trs, sender) {
     //var bytes = this.getBytes(trs)
     //return (500 + (Math.floor(bytes.length / 200) + 1)) * library.base.block.calculateFee()
-    return 500 * constants.fixedPoint
+    return SercJS.constants.fees.asset;
+    // return 500 * constants.fixedPoint
   }
 
   this.verify = function (trs, sender, cb) {

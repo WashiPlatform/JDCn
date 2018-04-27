@@ -10,6 +10,7 @@ var RequestSanitizer = require('../utils/request-sanitizer.js');
 var TransactionTypes = require('../utils/transaction-types.js');
 var Diff = require('../utils/diff.js');
 var sandboxHelper = require('../utils/sandbox.js');
+var SercJS = require('serc-js');
 
 var genesisblock = null;
 // Private fields
@@ -30,7 +31,8 @@ function Multisignature() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return ((trs.asset.multisignature.keysgroup.length + 1) * 5) * constants.fixedPoint;
+    return SercJS.constants.fees.multisignature;
+    // return ((trs.asset.multisignature.keysgroup.length + 1) * 5) * constants.fixedPoint;
   }
 
   this.verify = function (trs, sender, cb) {

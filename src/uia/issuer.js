@@ -1,4 +1,5 @@
-var constants = require('../utils/constants.js')
+var constants = require('../utils/constants.js');
+var SercJS = require('serc-js');
 
 function Issuer() {
   this.create = function (data, trs) {
@@ -17,7 +18,8 @@ function Issuer() {
     // FIXME bind library on global
     // var bytes = this.getBytes(trs)
     //return (100 + (Math.floor(bytes.length / 200) + 1)) * library.base.block.calculateFee()
-    return 100 * constants.fixedPoint
+    // return 100 * constants.fixedPoint;
+    return SercJS.constants.fees.issuer;
   }
 
   this.verify = function (trs, sender, cb) {
@@ -109,7 +111,7 @@ function Issuer() {
         desc: raw.issuers_desc
       }
 
-      return { uiaIssuer: issuer }
+      return {uiaIssuer: issuer}
     }
   }
 

@@ -10,6 +10,7 @@ var constants = require('../utils/constants.js');
 var TransactionTypes = require('../utils/transaction-types.js');
 var sandboxHelper = require('../utils/sandbox.js');
 var addressHelper = require('../utils/address.js')
+var SercJS = require('serc-js');
 
 require('array.prototype.find'); // Old node fix
 
@@ -30,15 +31,16 @@ function Delegate() {
       publicKey: data.sender.publicKey
     };
 
-    if(trs.asset.delegate.username){
-      trs.asset.delegate.username=trs.asset.delegate.username.toLowerCase().trim();
+    if (trs.asset.delegate.username) {
+      trs.asset.delegate.username = trs.asset.delegate.username.toLowerCase().trim();
     }
 
     return trs;
   }
 
   this.calculateFee = function (trs, sender) {
-    return 100 * constants.fixedPoint;
+    return SercJS.constants.fees.delegate;
+    // return 100 * constants.fixedPoint;
   }
 
   this.verify = function (trs, sender, cb) {
@@ -162,7 +164,7 @@ function Delegate() {
     }
     library.oneoff.set(nameKey, true)
     library.oneoff.set(idKey, true)
-    setImmediate(cb) 
+    setImmediate(cb)
   }
 
   this.undoUnconfirmed = function (trs, sender, cb) {
@@ -465,7 +467,7 @@ private.loop = function (cb) {
     // library.logger.debug('Loop:', 'lastBlock is in the same slot');
     return setImmediate(cb);
   }
-  
+
   if (Date.now() % 10000 > 5000) {
     library.logger.trace('Loop:', 'maybe too late to collect votes');
     return setImmediate(cb);
@@ -477,9 +479,9 @@ private.loop = function (cb) {
       return setImmediate(cb);
     }
 
-    library.sequence.add(function generateBlock (cb) {
+    library.sequence.add(function generateBlock(cb) {
       if (slots.getSlotNumber(currentBlockData.time) == slots.getSlotNumber() &&
-          modules.blocks.getLastBlock().timestamp < currentBlockData.time) {
+        modules.blocks.getLastBlock().timestamp < currentBlockData.time) {
         modules.blocks.generateBlock(currentBlockData.keypair, currentBlockData.time, cb);
       } else {
         // library.logger.log('Loop', 'exit: ' + _activeDelegates[slots.getSlotNumber() % slots.delegates] + ' delegate slot');
@@ -632,17 +634,17 @@ Delegates.prototype.checkDelegates = function (publicKey, votes, cb) {
 
           cb();
         });
-      }, function(err) {
+      }, function (err) {
         if (err) {
           return cb(err);
         }
         var total_votes = (existing_votes + additions) - removals;
         if (total_votes > 101) {
-           var exceeded = total_votes - 101;
-           return cb("Maximum number of 101 votes exceeded (" + exceeded + " too many).");
-         } else {
-           return cb();
-         }
+          var exceeded = total_votes - 101;
+          return cb("Maximum number of 101 votes exceeded (" + exceeded + " too many).");
+        } else {
+          return cb();
+        }
       })
     });
   } else {
@@ -740,15 +742,15 @@ Delegates.prototype.getDelegates = function (query, cb) {
   }
   modules.accounts.getAccounts({
     isDelegate: 1,
-    sort: { "vote": -1, "publicKey": 1 }
+    sort: {"vote": -1, "publicKey": 1}
   }, ["username", "address", "publicKey", "vote", "missedblocks", "producedblocks", "fees", "rewards", "balance"], function (err, delegates) {
     if (err) {
       return cb(err);
     }
 
     var limit = query.limit || 101;
-		var offset = query.offset || 0;
-		var orderField = query.orderBy || 'rate:asc';
+    var offset = query.offset || 0;
+    var orderField = query.orderBy || 'rate:asc';
 
     orderField = orderField ? orderField.split(':') : null;
     limit = limit > 101 ? 101 : limit;
@@ -761,7 +763,7 @@ Delegates.prototype.getDelegates = function (query, cb) {
     var realLimit = Math.min(offset + limit, count);
 
     var lastBlock = modules.blocks.getLastBlock();
-		var totalSupply = private.blockStatus.calcSupply(lastBlock.height);
+    var totalSupply = private.blockStatus.calcSupply(lastBlock.height);
 
     for (var i = 0; i < delegates.length; i++) {
       delegates[i].rate = i + 1;
@@ -773,7 +775,7 @@ Delegates.prototype.getDelegates = function (query, cb) {
 
       var outsider = i + 1 > slots.delegates;
       delegates[i].productivity = (!outsider) ? Math.round(percent * 1e2) / 1e2 : 0;
-      
+
       delegates[i].forged = bignum(delegates[i].fees).plus(bignum(delegates[i].rewards)).toString();
     }
 
@@ -847,36 +849,36 @@ shared.getDelegate = function (req, cb) {
     }
 
     modules.delegates.getDelegates(query, function (err, result) {
-			if (err) {
-				return cb(err);
-			}
+      if (err) {
+        return cb(err);
+      }
 
-			var delegate = result.delegates.find(function (delegate) {
-				if (query.publicKey) {
-					return delegate.publicKey == query.publicKey;
-				}
-				if (query.username) {
-					return delegate.username == query.username;
-				}
+      var delegate = result.delegates.find(function (delegate) {
+        if (query.publicKey) {
+          return delegate.publicKey == query.publicKey;
+        }
+        if (query.username) {
+          return delegate.username == query.username;
+        }
 
-				return false;
-			});
+        return false;
+      });
 
-			if (delegate) {
-				cb(null, {delegate: delegate});
-			} else {
-				cb("Delegate not found");
-			}
-		});
+      if (delegate) {
+        cb(null, {delegate: delegate});
+      } else {
+        cb("Delegate not found");
+      }
+    });
   });
 }
 
-shared.count = function(req, cb) {
-  library.dbLite.query("select count(*) from delegates", {"count": Number}, function(err, rows) {
+shared.count = function (req, cb) {
+  library.dbLite.query("select count(*) from delegates", {"count": Number}, function (err, rows) {
     if (err) {
       return cb("Failed to count delegates");
     } else {
-      return cb(null, { count: rows[0].count });
+      return cb(null, {count: rows[0].count});
     }
   });
 }
@@ -957,6 +959,7 @@ shared.getDelegates = function (req, cb) {
       if (err) {
         return cb(err);
       }
+
       function compareNumber(a, b) {
         var sorta = parseFloat(a[result.orderBy]);
         var sortb = parseFloat(b[result.orderBy]);
@@ -981,7 +984,7 @@ shared.getDelegates = function (req, cb) {
         result.orderBy = 'rate';
       }
 
-      if (["approval", "productivity", "rate", "vote", "missedblocks", "producedblocks", "fees", "rewards", "balance"].indexOf(result.orderBy) > - 1) {
+      if (["approval", "productivity", "rate", "vote", "missedblocks", "producedblocks", "fees", "rewards", "balance"].indexOf(result.orderBy) > -1) {
         result.delegates = result.delegates.sort(compareNumber);
       } else {
         result.delegates = result.delegates.sort(compareString);
@@ -990,9 +993,9 @@ shared.getDelegates = function (req, cb) {
       var delegates = result.delegates.slice(result.offset, result.limit);
 
       if (!query.address) {
-        return cb(null, { delegates: delegates, totalCount: result.count });
+        return cb(null, {delegates: delegates, totalCount: result.count});
       }
-      modules.accounts.getAccount({ address: query.address }, function (err, voter) {
+      modules.accounts.getAccount({address: query.address}, function (err, voter) {
         if (err) {
           return cb("Failed to get voter account");
         }
@@ -1001,7 +1004,7 @@ shared.getDelegates = function (req, cb) {
             item.voted = (voter.delegates.indexOf(item.publicKey) != -1);
           });
         }
-        return cb(null, { delegates: delegates, totalCount: result.count });
+        return cb(null, {delegates: delegates, totalCount: result.count});
       });
     });
   });

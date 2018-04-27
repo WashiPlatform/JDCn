@@ -12,6 +12,7 @@ var TransactionTypes = require('../utils/transaction-types.js');
 var Diff = require('../utils/diff.js');
 var sandboxHelper = require('../utils/sandbox.js');
 var addressHelper = require('../utils/address.js');
+var SercJS = require('serc-js');
 
 // Private fields
 var modules, library, self, private = {}, shared = {};
@@ -29,7 +30,8 @@ function Vote() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return 0.1 * constants.fixedPoint;
+    return SercJS.constants.fees.vote;
+    // return 0.1 * constants.fixedPoint;
   }
 
   this.verify = function (trs, sender, cb) {

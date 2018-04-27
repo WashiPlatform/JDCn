@@ -396,7 +396,7 @@ private.attachApi = function () {
     var lastBlock = modules.blocks.getLastBlock();
     var lastSlot = slots.getSlotNumber(lastBlock.timestamp);
     if (slots.getNextSlot() - lastSlot >= 12) {
-      library.logger.error("OS INFO", shell.getInfo())
+      library.logger.error("OS INFO", shell.getInfo());
       library.logger.error("Blockchain is not ready", {
         lastBlock: lastBlock,
         getNextSlot: slots.getNextSlot(),
@@ -443,7 +443,7 @@ private.attachApi = function () {
       modules.transactions.receiveTransactions([transaction], cb);
     }, function (err, transactions) {
       if (err) {
-        library.logger.warn('Receive invalid transaction,id is ' + transaction.id, err);
+        library.logger.warn('Receive invalid transaction, id is ' + transaction.id, err);
         private.invalidTrsCache.set(transaction.id, true)
         res.status(200).json({success: false, error: err});
       } else {

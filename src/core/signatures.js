@@ -7,6 +7,7 @@ var slots = require('../utils/slots.js');
 var Router = require('../utils/router.js');
 var TransactionTypes = require('../utils/transaction-types.js');
 var sandboxHelper = require('../utils/sandbox.js');
+var SercJS = require('serc-js');
 
 // Private fields
 var modules, library, self, private = {}, shared = {};
@@ -23,7 +24,8 @@ function Signature() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return 5 * constants.fixedPoint;
+    return SercJS.constants.fees.secondsignature;
+    // return 5 * constants.fixedPoint;
   }
 
   this.verify = function (trs, sender, cb) {

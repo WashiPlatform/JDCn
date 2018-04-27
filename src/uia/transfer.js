@@ -4,6 +4,7 @@ var bignum = require('bignumber')
 var mathjs = require('mathjs')
 var amountHelper = require('../utils/amount.js')
 var addressHelper = require('../utils/address.js')
+var SercJS = require('serc-js');
 
 function Transfer() {
   this.create = function (data, trs) {
@@ -17,7 +18,8 @@ function Transfer() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return library.base.block.calculateFee()
+    return SercJS.transaction.calculateFee(trs.asset.uiaTransfer.amount);
+    // return library.base.block.calculateFee()
   }
 
   this.verify = function (trs, sender, cb) {
@@ -101,6 +103,7 @@ function Transfer() {
   }
 
   this.objectNormalize = function (trs) {
+    trs['asset']['uiaTransfer']['amount'] = String(trs['asset']['uiaTransfer']['amount']);
     var report = library.scheme.validate(trs.asset.uiaTransfer, {
       type: 'object',
       properties: {
@@ -135,7 +138,7 @@ function Transfer() {
         amount: raw.transfers_amount
       }
 
-      return { uiaTransfer: asset }
+      return {uiaTransfer: asset}
     }
   }
 

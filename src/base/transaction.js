@@ -5,6 +5,7 @@ var ed = require('../utils/ed.js');
 var bignum = require('bignumber');
 var constants = require('../utils/constants.js');
 var slots = require('../utils/slots.js');
+var SercJS = require('serc-js')
 
 var genesisblock = null;
 
@@ -59,6 +60,7 @@ Transaction.prototype.create = function (data) {
   trs.id = this.getId(trs);
 
   trs.fee = private.types[trs.type].calculateFee.call(this, trs, data.sender) || false;
+  // trs.fee = SercJS.transaction.calculateFee(amount);
 
   return trs;
 }
@@ -89,17 +91,18 @@ Transaction.prototype.multisign = function (keypair, trs) {
 }
 
 Transaction.prototype.getId = function (trs) {
-  if (global.featureSwitch.enableLongId) {
-    return this.getId2(trs);
-  }
-  var hash = this.getHash(trs);
-  var temp = new Buffer(8);
-  for (var i = 0; i < 8; i++) {
-    temp[i] = hash[7 - i];
-  }
-
-  var id = bignum.fromBuffer(temp).toString();
-  return id;
+  return this.getHash(trs).toString('hex')
+  // if (global.featureSwitch.enableLongId) {
+  //   return this.getId2(trs);
+  // }
+  // var hash = this.getHash(trs);
+  // var temp = new Buffer(8);
+  // for (var i = 0; i < 8; i++) {
+  //   temp[i] = hash[7 - i];
+  // }
+  //
+  // var id = bignum.fromBuffer(temp).toString();
+  // return id;
 }
 
 Transaction.prototype.getId2 = function (trs) {
@@ -137,7 +140,7 @@ Transaction.prototype.getBytes = function (trs, skipSignature, skipSecondSignatu
 
     if (trs.recipientId) {
       if (/^[0-9]{1,20}$/g.test(trs.recipientId)) {
-        var recipient = bignum(trs.recipientId).toBuffer({ size: 8 });
+        var recipient = bignum(trs.recipientId).toBuffer({size: 8});
         for (var i = 0; i < 8; i++) {
           bb.writeByte(recipient[i] || 0);
         }
@@ -252,7 +255,7 @@ Transaction.prototype.process = function (trs, sender, requester, cb) {
       return setImmediate(cb, err);
     }
 
-    this.scope.dbLite.query("SELECT count(id) FROM trs WHERE id=$id", { id: trs.id }, { "count": Number }, function (err, rows) {
+    this.scope.dbLite.query("SELECT count(id) FROM trs WHERE id=$id", {id: trs.id}, {"count": Number}, function (err, rows) {
       if (err) {
         return cb("Database error");
       }
@@ -351,7 +354,6 @@ Transaction.prototype.verify = function (trs, sender, requester, cb) { //inherit
   }
 
   var multisignatures = sender.multisignatures || sender.u_multisignatures;
-
   if (multisignatures.length == 0) {
     if (trs.asset && trs.asset.multisignature && trs.asset.multisignature.keysgroup) {
 
@@ -391,6 +393,7 @@ Transaction.prototype.verify = function (trs, sender, requester, cb) { //inherit
   }
 
   // Calc fee
+  // var fee = SercJS.transaction.calculateFee(trs.amount);
   var fee = private.types[trs.type].calculateFee.call(private.types[trs.type], trs, sender) || false;
   if (!fee || trs.fee != fee) {
     return setImmediate(cb, "Invalid transaction type/fee: " + trs.id);
@@ -479,7 +482,6 @@ Transaction.prototype.apply = function (trs, block, sender, cb) {
   if (trs.type === 7) return private.types[trs.type].apply.call(this, trs, block, sender, cb);
 
   var amount = trs.amount + trs.fee;
-
   if (trs.blockId != genesisblock.block.id && sender.balance < amount) {
     return setImmediate(cb, "Insufficient balance: " + sender.balance);
   }
@@ -547,12 +549,12 @@ Transaction.prototype.applyUnconfirmed = function (trs, sender, requester, cb) {
   }
 
   library.balanceCache.addNativeBalance(sender.address, -amount)
-  this.scope.account.merge(sender.address, { u_balance: -amount }, function (err, sender) {
+  this.scope.account.merge(sender.address, {u_balance: -amount}, function (err, sender) {
     if (err) return cb(err);
     private.types[trs.type].applyUnconfirmed.call(this, trs, sender, function (err) {
       if (err) {
         library.balanceCache.addNativeBalance(sender.address, amount)
-        this.scope.account.merge(sender.address, { u_balance: amount }, function (err2) {
+        this.scope.account.merge(sender.address, {u_balance: amount}, function (err2) {
           cb(err2 || err)
         })
       } else {
@@ -572,7 +574,7 @@ Transaction.prototype.undoUnconfirmed = function (trs, sender, cb) {
   var amount = trs.amount + trs.fee;
 
   library.balanceCache.addNativeBalance(sender.address, amount)
-  this.scope.account.merge(sender.address, { u_balance: amount }, function (err, sender) {
+  this.scope.account.merge(sender.address, {u_balance: amount}, function (err, sender) {
     if (err) return cb(err);
     private.types[trs.type].undoUnconfirmed.call(this, trs, sender, cb);
   }.bind(this));
@@ -628,6 +630,11 @@ Transaction.prototype.objectNormalize = function (trs) {
       delete trs[i];
     }
   }
+
+  trs['type'] = Number(trs['type']);
+  trs['amount'] = Number(trs['amount']);
+  trs['fee'] = Number(trs['fee']);
+  trs['timestamp'] = Number(trs['timestamp']);
 
   var report = this.scope.scheme.validate(trs, {
     type: "object",
