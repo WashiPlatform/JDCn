@@ -110,7 +110,7 @@ describe("POST /peer/transactions", function () {
         });
 
         it("Using blank second signature. Should fail", function (done) {
-            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, ""); // Send 1 XAS to address 1L
+            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, ""); // Send 1 SERC to address 1L
             node.peer.post("/transactions")
                 .set("Accept", "application/json")
                 .set("version", node.version)
@@ -129,7 +129,7 @@ describe("POST /peer/transactions", function () {
         });
 
         it("Using fake second signature. Should fail", function (done) {
-            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, account2.secondPassword); // Send 1 XAS to address 1L
+            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, account2.secondPassword); // Send 1 SERC to address 1L
             transaction.signSignature = crypto.randomBytes(64).toString("hex");
             transaction.id = node.asch.crypto.getId(transaction);
             node.peer.post("/transactions")
@@ -150,7 +150,7 @@ describe("POST /peer/transactions", function () {
         });
 
         it.skip("Using valid second signature. Should be ok", function (done) {
-            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, account.secondPassword); // Send 1 XAS to address 1L
+            var transaction = node.asch.transaction.createTransaction("1", 1, account.password, account.secondPassword); // Send 1 SERC to address 1L
             node.peer.post("/transactions")
                 .set("Accept", "application/json")
                 .set("version", node.version)

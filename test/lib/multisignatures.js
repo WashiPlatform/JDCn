@@ -6,8 +6,8 @@ var node = require("./../variables.js");
 var totalMembers = node.randomNumber(2,16);
 var requiredSignatures = node.randomNumber(2,totalMembers+1);
 
-var NoXASAccount = node.randomAccount();
-NoXASAccount.name = "noxas";
+var NoSERCAccount = node.randomAccount();
+NoSERCAccount.name = "noserc";
 
 var MultisigAccount = node.randomAccount();
 MultisigAccount.name = "multi";
@@ -44,9 +44,9 @@ function openAccount (account, i) {
             if (res.body.account != null && i != null) {
                   Accounts[i].address = res.body.account.address;
                   Accounts[i].publicKey = res.body.account.publicKey;
-            } else if (account.name == "noxas") {
-                NoXASAccount.address = res.body.account.address;
-                NoXASAccount.publicKey = res.body.account.publicKey;
+            } else if (account.name == "noserc") {
+                NoSERCAccount.address = res.body.account.address;
+                NoSERCAccount.publicKey = res.body.account.publicKey;
             } else if (account.name == "multi") {
                 MultisigAccount.address = res.body.account.address;
                 MultisigAccount.publicKey = res.body.account.publicKey;
@@ -139,7 +139,7 @@ before(function (done) {
             }, 2000);
         }
     }
-    openAccount(NoXASAccount, null);
+    openAccount(NoSERCAccount, null);
     openAccount(MultisigAccount, null);
     done();
 });
@@ -195,7 +195,7 @@ describe("PUT /multisignatures", function () {
         node.api.put("/multisignatures")
             .set("Accept", "application/json")
             .send({
-                secret: NoXASAccount.password,
+                secret: NoSERCAccount.password,
                 lifetime: 1,
                 min: requiredSignatures,
                 keysgroup: Keys

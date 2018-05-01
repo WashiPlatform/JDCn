@@ -221,7 +221,7 @@ describe("GET /accounts?address=", function () {
                 done();
             });
     });
-// TODO new account's publickey not in db,so can not get its publick key until it transfers out xas.
+// TODO new account's publickey not in db,so can not get its publick key until it transfers out serc.
 // anther situation is that old account may have publickey in db
 
     it("Using invalid address. Should fail", function (done) {
