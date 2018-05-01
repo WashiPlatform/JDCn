@@ -321,14 +321,14 @@ Accounts.prototype.generateAddressByPublicKey = function (publicKey) {
 }
 
 Accounts.prototype.generateAddressByPublicKey2 = function (publicKey) {
-  if (!global.featureSwitch.enableUIA) {
+  // if (!global.featureSwitch.enableUIA) {
     return self.generateAddressByPublicKey(publicKey)
-  }
-  var oldAddress = self.generateAddressByPublicKey(publicKey)
-  if (library.balanceCache.getNativeBalance(oldAddress)) {
-    return oldAddress
-  }
-  return addressHelper.generateBase58CheckAddress(publicKey)
+  // }
+  // var oldAddress = self.generateAddressByPublicKey(publicKey)
+  // if (library.balanceCache.getNativeBalance(oldAddress)) {
+  //   return oldAddress
+  // }
+  // return addressHelper.generateBase58CheckAddress(publicKey)
 }
 
 Accounts.prototype.getAccount = function (filter, fields, cb) {

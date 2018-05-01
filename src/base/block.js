@@ -117,13 +117,13 @@ Block.prototype.getBytes = function (block) {
     bb.writeInt(block.version);
     bb.writeInt(block.timestamp);
 
-    if (global.featureSwitch.enableLongId) {
-      if (block.previousBlock) {
-        bb.writeString(block.previousBlock)
-      } else {
-        bb.writeString('0')
-      }
-    } else {
+    // if (global.featureSwitch.enableLongId) {
+    //   if (block.previousBlock) {
+    //     bb.writeString(block.previousBlock)
+    //   } else {
+    //     bb.writeString('0')
+    //   }
+    // } else {
       if (block.previousBlock) {
         var pb = bignum(block.previousBlock).toBuffer({size: '8'});
 
@@ -135,7 +135,7 @@ Block.prototype.getBytes = function (block) {
           bb.writeByte(0);
         }
       }
-    }
+    // }
 
     bb.writeInt(block.numberOfTransactions);
     bb.writeLong(block.totalAmount);

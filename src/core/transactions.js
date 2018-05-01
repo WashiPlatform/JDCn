@@ -44,12 +44,12 @@ function Transfer() {
       return cb("Invalid recipientId, cannot be your self");
     }
 
-    if (!global.featureSwitch.enableMoreLockTypes) {
-      var lastBlock = modules.blocks.getLastBlock()
-      if (sender.lockHeight && lastBlock && lastBlock.height + 1 <= sender.lockHeight) {
-        return cb('Account is locked')
-      }
-    }
+    // if (!global.featureSwitch.enableMoreLockTypes) {
+    //   var lastBlock = modules.blocks.getLastBlock()
+    //   if (sender.lockHeight && lastBlock && lastBlock.height + 1 <= sender.lockHeight) {
+    //     return cb('Account is locked')
+    //   }
+    // }
 
     cb(null, trs);
   }
@@ -257,11 +257,11 @@ function Lock() {
     var lastBlock = modules.blocks.getLastBlock()
 
     if (isNaN(lockHeight) || lockHeight <= lastBlock.height) return cb('Invalid lock height')
-    if (global.featureSwitch.enableLockReset) {
-      if (sender.lockHeight && lastBlock.height + 1 <= sender.lockHeight && lockHeight <= sender.lockHeight) return cb('Account is already locked at height ' + sender.lockHeight)
-    } else {
+    // if (global.featureSwitch.enableLockReset) {
+    //   if (sender.lockHeight && lastBlock.height + 1 <= sender.lockHeight && lockHeight <= sender.lockHeight) return cb('Account is already locked at height ' + sender.lockHeight)
+    // } else {
       if (sender.lockHeight && lastBlock.height + 1 <= sender.lockHeight) return cb('Account is already locked at height ' + sender.lockHeight)
-    }
+    // }
 
     cb(null, trs);
   }
@@ -590,10 +590,12 @@ Transactions.prototype.processUnconfirmedTransaction = function (transaction, br
   if (!transaction.id) {
     transaction.id = library.base.transaction.getId(transaction);
   }
-  if (!global.featureSwitch.enableUIA && transaction.type >= 8 && transaction.type <= 14) {
+  // !global.featureSwitch.enableUIA &&
+  if (transaction.type >= 8 && transaction.type <= 14) {
     return cb("Feature not activated");
   }
-  if (!global.featureSwitch.enable1_3_0 && ([5, 6, 7, 100].indexOf(transaction.type) !== -1 || transaction.message || transaction.args)) {
+  // !global.featureSwitch.enable1_3_0 &&
+  if (([5, 6, 7, 100].indexOf(transaction.type) !== -1 || transaction.message || transaction.args)) {
     return cb("Feature not activated");
   }
   // Check transaction indexes
