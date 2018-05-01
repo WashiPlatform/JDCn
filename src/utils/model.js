@@ -436,7 +436,7 @@ class Model {
   }
 
   getDAppBalance(dappId, currency, cb) {
-    if (currency !== 'XAS') {
+    if (currency !== 'SERC') {
       return this.getAccountBalances(dappId, currency, function (err, rows) {
         if (err) return cb('Database error: ' + err)
         if (!rows || !rows.length) return cb(null, '0')
@@ -468,7 +468,7 @@ class Model {
         table: 'mem_asset_balances',
         condition: {
           address: dappId,
-          currency: 'XAS'
+          currency: 'SERC'
         },
         fields: ['balance', 'currency']
       })

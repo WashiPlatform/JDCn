@@ -10,12 +10,12 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
   $rootScope.secpwd = userService.secondPublicKey;
   //没有注册发行商
   $scope.init = function () {
-
     checkTab()
     apiService.issuer({
       address: userService.address
     }).success(function (res) {
       if (res.success == true) {
+        console.log(res);
         // 已经注册发行商
         $scope.monname = res.issuer.name;
         $scope.mondesc = res.issuer.desc;
@@ -261,6 +261,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
   }
   //myWriteOff
   $scope.myWriteOff = function (i) {
+    console.log(i);
     $scope.moneyName = i.name
     $rootScope.isBodyMask = true;
     $scope.myAss.writeoff = true;

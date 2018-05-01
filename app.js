@@ -20,7 +20,8 @@ function verifyGenesisBlock(scope, block) {
         }
         var id = scope.base.block.getId(block);
         assert.equal(payloadLength, block.payloadLength, 'Unexpected payloadLength');
-        assert.equal(payloadHash.digest().toString('hex'), block.payloadHash, 'Unexpected payloadHash');
+        var payloadHashId  = payloadHash.digest().toString('hex');
+        assert.equal(payloadHashId, block.payloadHash, 'Unexpected payloadHash');
         assert.equal(id, block.id, 'Unexpected block id');
         // assert.equal(id, '11839820784468442760', 'Block id is incorrect');
     } catch (e) {

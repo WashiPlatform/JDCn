@@ -41,7 +41,7 @@ function Asset() {
     var fullName = asset.name
     var issuerName = nameParts[0]
     var currencyName = nameParts[1]
-    if (!currencyName || !/^[A-Z]{3,6}$/.test(currencyName)) return setImmediate(cb, 'Invalid asset currency name')
+    if (!currencyName || !/^[A-Z]{1,6}$/.test(currencyName)) return setImmediate(cb, 'Invalid asset currency name')
     if (!asset.desc) return setImmediate(cb, 'Invalid asset desc')
     if (asset.desc.length > 4096) return setImmediate(cb, 'Invalid asset desc size')
 
