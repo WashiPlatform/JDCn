@@ -2,7 +2,8 @@ var assert = require('assert')
 var async = require('async')
 var bignum = require('bignumber')
 var mathjs = require('mathjs')
-var amountHelper = require('../utils/amount.js')
+var amountHelper = require('../utils/amount.js');
+var SercJS = require('serc-js');
 
 function Issue() {
   this.create = function (data, trs) {
@@ -16,7 +17,8 @@ function Issue() {
   }
 
   this.calculateFee = function (trs, sender) {
-    return library.base.block.calculateFee()
+    return SercJS.constants.fees.issue;
+    //return library.base.block.calculateFee()
   }
 
   this.verify = function (trs, sender, cb) {
@@ -151,7 +153,7 @@ function Issue() {
         amount: raw.issues_amount
       }
 
-      return { uiaIssue: asset }
+      return {uiaIssue: asset}
     }
   }
 

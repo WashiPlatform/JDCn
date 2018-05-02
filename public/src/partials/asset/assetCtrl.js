@@ -145,7 +145,7 @@ angular.module('serc').controller('assetCtrl', function ($scope, $rootScope, api
       toastError($translate.instant('ERR_NO_PUBLISHER_REGISTERED_YET'));
       return false;
     }
-    var reg = /^[A-Z]{3,6}$/;
+    var reg = /^[A-Z]{1,6}$/;
     if (!reg.test($scope.publishName)) {
       toastError($translate.instant('ERR_ASSET_NAME_3_TO_6_CAPITAL_LETTERS'));
       return false;

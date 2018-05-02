@@ -10,7 +10,6 @@
     "build": "browserify build.js -o bower_components/bitcore-mnemonic.js && cp node_modules/serc-js/browserify-serc.js bower_components/ && cp node_modules/bignumber.js/bignumber.min.js bower_components/"
   },
   "dependencies": {
-    "serc-js": "https://github.com/WashiPlatform/serc-js.git",
     "bignumber.js": "^5.0.0",
     "bitcore-mnemonic": "1.0.1",
     "browserify": "^14.4.0",
@@ -46,6 +45,7 @@
     "gulp-util": "^3.0.7",
     "json-beautify": "^1.0.1",
     "node-sass": "^3.13.1",
-    "run-sequence": "^1.1.4"
+    "run-sequence": "^1.1.4",
+    "serc-js": "git+https://github.com/WashiPlatform/serc-js.git"
   }
 }

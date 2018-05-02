@@ -591,13 +591,13 @@ Transactions.prototype.processUnconfirmedTransaction = function (transaction, br
     transaction.id = library.base.transaction.getId(transaction);
   }
   // !global.featureSwitch.enableUIA &&
-  if (transaction.type >= 8 && transaction.type <= 14) {
-    return cb("Feature not activated");
-  }
+  // if (transaction.type >= 8 && transaction.type <= 14) {
+  //   return cb("Feature not activated");
+  // }
   // !global.featureSwitch.enable1_3_0 &&
-  if (([5, 6, 7, 100].indexOf(transaction.type) !== -1 || transaction.message || transaction.args)) {
-    return cb("Feature not activated");
-  }
+  // if (([5, 6, 7, 100].indexOf(transaction.type) !== -1 || transaction.message || transaction.args)) {
+  //   return cb("Feature not activated");
+  // }
   // Check transaction indexes
   if (private.unconfirmedTransactionsIdIndex[transaction.id] !== undefined) {
     return cb("Transaction " + transaction.id + " already exists, ignoring...");
