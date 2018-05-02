@@ -63,8 +63,8 @@ private.updatePrice = function (price, cb) {
 
 private.getPrice = function (cb) {
   library.dbLite.query("SELECT price, issuePrice FROM price", {
-    "price": Number,
-    "issuePrice": Number
+    "price": String,
+    "issuePrice": String
   }, function (err, rows) {
     if (err) {
       library.logger.error('Price#get', err);
@@ -76,15 +76,15 @@ private.getPrice = function (cb) {
 
     library.dbLite.query("INSERT OR IGNORE INTO price (name, price, issuePrice) VALUES ($name, $price, $issuePrice)", {
       "name": "SERC",
-      "price": 100,
-      "issuePrice": 100
+      "price": '100',
+      "issuePrice": '100'
     }, function (err) {
       if (err) {
         library.logger.error('Price#insert', err);
         return cb(err);
       }
 
-      return cb(null, {"price": 100, "issuePrice": 100});
+      return cb(null, {"price": '100', "issuePrice": '100'});
     });
   });
 }

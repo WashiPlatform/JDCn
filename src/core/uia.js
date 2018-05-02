@@ -67,6 +67,8 @@ private.attachApi = function () {
     'get /user/assets/:address': 'getAccountAssets',
     'get /user/asset/:address/:currency': 'getAccountAsset',
 
+    'get /asset/transaction/:id': 'getTransaction',
+
     'get /asset/transactions/:address/': 'getMyTransactions',
     // 'get /asset/transactions/:address/:currency': 'getMyTransactions',
 
@@ -182,7 +184,7 @@ private.queryTransactions = function (query, cb) {
         }
         delete t.t_id
       }
-      var assetNames = new Set
+      var assetNames = new Set;
       data.transactions.forEach(function (trs) {
         if (trs.type === 13) {
           assetNames.add(trs.asset.uiaIssue.currency)
@@ -580,6 +582,21 @@ shared.getMyTransactions = function (req, cb) {
     }
     query.ownerAddress = req.params.address
     private.queryTransactions(query, cb)
+  })
+}
+
+shared.getTransaction = function (req, cb) {
+  if (!req.params || !req.params.id || req.params.id.length !== 64) {
+    return cb('Invalid parameters')
+  }
+
+  var query = req.body;
+  query.id = req.params.id;
+
+  private.queryTransactions(query, function (err, data) {
+    if (err) return cb(err);
+
+    return cb(null, {transaction: data.transactions[0]});
   })
 }
 

@@ -488,8 +488,9 @@ shared.getPeers = function (req, cb) {
       }
 
       for (var i = 0; i < peers.length; i++) {
-        peers[i].ip = ip.fromLong(peers[i].ip);
+        peers[i].ip = ip.fromLong(peers[i].ip).replace(/^[0-9]+.[0-9]+/, '*.*');
       }
+
       library.dbLite.query("select count(1) from peers", function (err, count) {
         if (err) {
           return cb("Can not get peers count");

@@ -14,11 +14,13 @@ function Asset() {
       desc: data.desc,
       maximum: data.maximum,
       precision: data.precision,
+      issuePrice: data.issuePrice,
+      price: data.price,
       strategy: data.strategy,
       allowWriteoff: data.allowWriteoff,
       allowWhitelist: data.allowWhitelist,
       allowBlacklist: data.allowBlacklist
-    }
+    };
 
     return trs
   }
@@ -45,7 +47,12 @@ function Asset() {
     if (!asset.desc) return setImmediate(cb, 'Invalid asset desc')
     if (asset.desc.length > 4096) return setImmediate(cb, 'Invalid asset desc size')
 
-    if (asset.precision > 16 || asset.precision < 0) return setImmediate(cb, 'Invalid asset precision')
+    if (asset.precision > 16 || asset.precision < 0) return setImmediate(cb, 'Invalid asset precision');
+
+    var issuePrice = parseFloat(asset.issuePrice);
+    if (isNaN(issuePrice) || issuePrice > 10000000000 || issuePrice < 0) return setImmediate(cb, 'Invalid asset issuePrice')
+    var price = parseFloat(asset.price);
+    if (isNaN(price) || price > 10000000000 || price < 0) return setImmediate(cb, 'Invalid asset price')
 
     var error = amountHelper.validate(asset.maximum)
     if (error) return setImmediate(cb, error)
@@ -79,6 +86,8 @@ function Asset() {
       new Buffer(asset.desc, 'utf8'),
       new Buffer(asset.maximum, 'utf8'),
       Buffer.from([asset.precision || 0]),
+      Buffer.from(asset.issuePrice, 'utf8'),
+      Buffer.from(asset.price, 'utf8'),
       new Buffer(asset.strategy || '', 'utf8'),
       Buffer.from([asset.allowWriteoff || 0]),
       Buffer.from([asset.allowWhitelist || 0]),
@@ -115,12 +124,17 @@ function Asset() {
   }
 
   this.objectNormalize = function (trs) {
-    var report = library.scheme.validate(trs.asset.uiaAsset, {
+    var asset = trs.asset.uiaAsset;
+    asset['precision'] = parseInt(asset['precision']);
+    asset['allowWriteoff'] = parseInt(asset['allowWriteoff']);
+    asset['allowWhitelist'] = parseInt(asset['allowWhitelist']);
+    asset['allowBlacklist'] = parseInt(asset['allowBlacklist']);
+    var report = library.scheme.validate(asset, {
       type: 'object',
       properties: {
         name: {
           type: 'string',
-          minLength: 3,
+          minLength: 1,
           maxLength: 22
         },
         desc: {
@@ -137,6 +151,16 @@ function Asset() {
           type: 'integer',
           minimum: 0,
           maximum: 16
+        },
+        issuePrice: {
+          type: 'string',
+          minLength: 1,
+          maxLength: 20
+        },
+        price: {
+          type: 'string',
+          minLength: 1,
+          maxLength: 50
         },
         strategy: {
           type: 'string',
@@ -158,13 +182,14 @@ function Asset() {
           maximum: 1
         }
       },
-      required: ['name', 'desc', 'maximum', 'precision']
+      required: ['name', 'desc', 'maximum', 'precision', 'issuePrice', 'price']
     })
 
     if (!report) {
       throw Error('Can\'t parse asset: ' + library.scheme.getLastError())
     }
 
+    trs.asset.uiaAsset = asset;
     return trs
   }
 
@@ -178,6 +203,8 @@ function Asset() {
         desc: raw.assets_desc,
         maximum: raw.assets_maximum,
         precision: raw.assets_precision,
+        issuePrice: raw.issuePrice,
+        price: raw.price,
         strategy: raw.assets_strategy,
         allowWriteoff: raw.assets_allowWriteoff,
         allowWhitelist: raw.assets_allowWhitelist,
@@ -200,6 +227,8 @@ function Asset() {
       desc: asset.desc,
       maximum: asset.maximum,
       precision: asset.precision,
+      issuePrice: asset.issuePrice,
+      price: asset.price,
       strategy: asset.strategy,
       allowWriteoff: asset.allowWriteoff || 0,
       allowWhitelist: asset.allowWhitelist || 0,
