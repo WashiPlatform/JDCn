@@ -87,7 +87,10 @@ function Flags() {
   }
 
   this.objectNormalize = function (trs) {
-    var report = library.scheme.validate(trs.asset.uiaFlags, {
+    var asset = trs.asset.uiaFlags;
+    asset['flag'] = parseInt(asset['flag']);
+    asset['flagType'] = parseInt(asset['flagType']);
+    var report = library.scheme.validate(asset, {
       type: 'object',
       properties: {
         currency: {
@@ -109,6 +112,7 @@ function Flags() {
       throw Error('Can\'t parse flags: ' + library.scheme.getLastError())
     }
 
+    trs.asset.uiaFlags = asset;
     return trs
   }
 
