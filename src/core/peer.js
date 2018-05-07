@@ -372,7 +372,7 @@ Peer.prototype.isCompatible = function (version) {
   }
   var compatibleVersion = '0.0.0';
   if (library.config.netVersion == 'testnet') {
-    compatibleVersion = '1.0.3';
+    compatibleVersion = '1.0.1';
   } else if (library.config.netVersion == 'mainnet') {
     compatibleVersion = '1.0.1';
   }

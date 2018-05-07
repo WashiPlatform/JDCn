@@ -16,6 +16,10 @@
       "timeout": 4000
     }
   },
+  "reward": {
+    "secret": "wine art left hour recall act head illness renew hole exile spike",
+    "validate": "serc.io"
+  },
   "forging": {
     "secret": [
       "fragile drill merit estate panel cover amount reform latin person paddle quick",

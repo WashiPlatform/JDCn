@@ -183,7 +183,7 @@ private.attachApi = function () {
     library.logger.error(req.url, err.toString());
     res.status(500).send({ success: false, error: err.toString() });
   });
-}
+};
 
 private.saveGenesisBlock = function (cb) {
   library.dbLite.query("SELECT id FROM blocks WHERE id=$id", { id: genesisblock.block.id }, ['id'], function (err, rows) {

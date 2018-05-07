@@ -139,14 +139,14 @@ Transaction.prototype.getBytes = function (trs, skipSignature, skipSecondSignatu
     }
 
     if (trs.recipientId) {
-      if (/^[0-9]{1,20}$/g.test(trs.recipientId)) {
-        var recipient = bignum(trs.recipientId).toBuffer({size: 8});
-        for (var i = 0; i < 8; i++) {
-          bb.writeByte(recipient[i] || 0);
-        }
-      } else {
+      // if (/^[0-9]{1,20}$/g.test(trs.recipientId)) {
+      //   var recipient = bignum(trs.recipientId).toBuffer({size: 8});
+      //   for (var i = 0; i < 8; i++) {
+      //     bb.writeByte(recipient[i] || 0);
+      //   }
+      // } else {
         bb.writeString(trs.recipientId);
-      }
+      // }
     } else {
       for (var i = 0; i < 8; i++) {
         bb.writeByte(0);

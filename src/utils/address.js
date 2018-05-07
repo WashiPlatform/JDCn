@@ -8,14 +8,14 @@ module.exports = {
     if (typeof address !== 'string') {
       return false
     }
-    if (!/^[0-9]{1,20}$/g.test(address)) {
+    // if (!/^[0-9]{1,20}$/g.test(address)) {
       if (!base58check.decodeUnsafe(address.slice(1))) {
         return false
       }
       if (['A'].indexOf(address[0]) == -1) {
         return false
       }
-    }
+    // }
     return true
   },
 
