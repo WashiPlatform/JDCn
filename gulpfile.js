@@ -12,7 +12,8 @@ var format = util.format;
 var buildTime = moment().format('HH:mm:ss DD/MM/YYYY');
 
 function build(osVersion, netVersion) {
-  var dir = 'serc-' + osVersion + '-' + package.version + '-' + netVersion;
+  //var dir = 'serc-' + osVersion + '-' + package.version + '-' + netVersion;
+  var dir = 'serc-' + osVersion + '-latest-' + netVersion;
   var fullpath = path.join(__dirname, 'build', dir);
   var cmds = [];
   cmds.push(format('cd %s && mkdir -p public dapps tmp logs bin', fullpath));
@@ -52,7 +53,8 @@ function build(osVersion, netVersion) {
 }
 
 function buildSource(netVersion) {
-  var dir = 'serc-' + 'linux' + '-' + package.version + '-' + netVersion;
+  // var dir = 'serc-' + 'linux' + '-' + package.version + '-' + netVersion;
+  var dir = 'serc-' + 'linux' + '-latest-' + netVersion;
   var fullpath = path.join(__dirname, 'build', dir);
   return gulp.src('app.js')
     .pipe(webpack({

@@ -14,7 +14,7 @@
     "bitcore-mnemonic": "1.0.1",
     "browserify": "^14.4.0",
     "cjson": "^0.3.2",
-    "colors": "^1.1.2",
+    "colors": "^1.2.4",
     "date-format": "0.0.2",
     "del": "^2.0.2",
     "filepaths": "^0.2.0",
