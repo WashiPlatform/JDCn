@@ -35,6 +35,7 @@ private.attachApi = function () {
     // "get /": "getPrices",
     // "get /version": "version",
     "get /get": "getPrice",
+    'post /set': "setPrice",
     'put /issuers': 'registerIssuer',
   });
 
@@ -115,13 +116,14 @@ Price.prototype.sandboxApi = function (call, args, cb) {
 // Events
 Price.prototype.onBind = function (scope) {
   modules = scope;
-}
+};
 
 // Shared
 shared.getPrice = function (req, cb) {
   private.getPrice(function (err, price) {
+    library.logger.error('price:', price);
     err && library.logger.error('get Price fail', err);
-    cb && cb()
+    cb && cb(null, price)
   });
   // var query = req.body;
   // library.scheme.validate(query, {
@@ -160,17 +162,17 @@ shared.getPrice = function (req, cb) {
   //   //   cb(null, {price: price || {}});
   //   // });
   // });
-}
+};
 
 shared.setPrice = function (req, cb) {
-  var price = parseInt(req.data.price);
+  var price = parseInt(req.body.price);
   if (isNaN(price)) return cb('Price is not a number');
 
   private.updatePrice(price, function (err) {
     err && library.logger.error('set Price fail', err);
-    cb && cb();
-  })
-}
+    cb && cb(null, {price: price});
+  });
+};
 
 // Export
 module.exports = Price;
