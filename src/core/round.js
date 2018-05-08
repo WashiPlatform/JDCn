@@ -174,7 +174,7 @@ Round.prototype.backwardTick = function (block, previousBlock, cb) {
               // if (global.featureSwitch.fixVoteNewAddressIssue) {
               //   outsiders.push(modules.accounts.generateAddressByPublicKey2(roundDelegates[i]));
               // } else {
-                outsiders.push(modules.accounts.generateAddressByPublicKey(roundDelegates[i]));
+              outsiders.push(modules.accounts.generateAddressByPublicKey(roundDelegates[i]));
               // }
             }
           }
@@ -256,7 +256,7 @@ Round.prototype.backwardTick = function (block, previousBlock, cb) {
             // if (global.featureSwitch.fixVoteNewAddressIssue) {
             //   address = modules.accounts.generateAddressByPublicKey2(vote.delegate)
             // } else {
-              address = modules.accounts.generateAddressByPublicKey(vote.delegate)
+            address = modules.accounts.generateAddressByPublicKey(vote.delegate)
             // }
             library.dbLite.query('update mem_accounts set vote = vote + $amount where address = $address', {
               address: address,
@@ -336,7 +336,7 @@ Round.prototype.tick = function (block, cb) {
               // if (global.featureSwitch.fixVoteNewAddressIssue) {
               //   outsiders.push(modules.accounts.generateAddressByPublicKey2(roundDelegates[i]));
               // } else {
-                outsiders.push(modules.accounts.generateAddressByPublicKey(roundDelegates[i]));
+              outsiders.push(modules.accounts.generateAddressByPublicKey(roundDelegates[i]));
               // }
             }
           }
@@ -417,7 +417,7 @@ Round.prototype.tick = function (block, cb) {
             // if (global.featureSwitch.fixVoteNewAddressIssue) {
             //   address = modules.accounts.generateAddressByPublicKey2(vote.delegate)
             // } else {
-              address = modules.accounts.generateAddressByPublicKey(vote.delegate)
+            address = modules.accounts.generateAddressByPublicKey(vote.delegate)
             // }
             library.dbLite.query('update mem_accounts set vote = vote + $amount where address = $address', {
               address: address,

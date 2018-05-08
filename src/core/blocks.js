@@ -276,7 +276,6 @@ private.list = function (filter, cb) {
     }
   }
 
-
   if (sortBy) {
     if (sortFields.indexOf(sortBy) < 0) {
       return cb("Invalid sort field");
