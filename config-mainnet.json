@@ -10,15 +10,19 @@
     }
   },
   "peers": {
-    "list": [],
+    "list": [
+      {
+        "ip": "47.96.64.180",
+        "port": 81
+      }
+    ],
     "blackList": [],
     "options": {
       "timeout": 4000
     }
   },
   "forging": {
-    "secret": [
-    ],
+    "secret": [],
     "access": {
       "whiteList": [
         "127.0.0.1"
@@ -39,7 +43,7 @@
     }
   },
   "dapp": {
-    "masterpassword": "",
+    "masterpassword": "25vQ7GPGrjoq",
     "params": {}
   }
 }

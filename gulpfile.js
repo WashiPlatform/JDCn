@@ -27,9 +27,9 @@ function build(osVersion, netVersion) {
     cmds.push(format('cp genesisBlock.json %s/', fullpath));
     cmds.push(format('cp third_party/sqlite3.exe %s/', fullpath));
   }
-  if (osVersion == 'linux') {
-    cmds.push(format('cp `which node` %s/bin/', fullpath));
-  }
+  // if (osVersion == 'linux') {
+  //   cmds.push(format('cp `which node` %s/bin/', fullpath));
+  // }
   cmds.push(format('cp -r public/dist %s/public/', fullpath));
   cmds.push(format('cd %s && npm install --production', fullpath));
   cmds.push(format('cd %s/.. && tar zcf %s.tar.gz %s', fullpath, dir, dir));
@@ -76,7 +76,7 @@ function buildSource(netVersion) {
 
 gulp.task('build-src-main', function () {
   return buildSource('mainnet');
-})
+});
 
 gulp.task('win64-build-local', function () {
   return build('win64', 'localnet');

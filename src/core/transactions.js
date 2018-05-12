@@ -45,10 +45,10 @@ function Transfer() {
     }
 
     // if (!global.featureSwitch.enableMoreLockTypes) {
-    //   var lastBlock = modules.blocks.getLastBlock()
-    //   if (sender.lockHeight && lastBlock && lastBlock.height + 1 <= sender.lockHeight) {
-    //     return cb('Account is locked')
-    //   }
+      var lastBlock = modules.blocks.getLastBlock()
+      if (sender.lockHeight && lastBlock && lastBlock.height + 1 <= sender.lockHeight) {
+        return cb('Account is locked')
+      }
     // }
 
     cb(null, trs);

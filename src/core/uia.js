@@ -72,7 +72,6 @@ private.attachApi = function () {
     'get /asset/transactions/:address/': 'getMyTransactions',
     // 'get /asset/transactions/:address/:currency': 'getMyTransactions',
 
-
     'get /balances/:address': 'getBalances',
     'get /balances/:address/:currency': 'getBalance',
 
@@ -552,7 +551,7 @@ shared.getBalance = function (req, cb) {
     if (err) return cb('Failed to get balance: ' + err)
     if (!results || results.length == 0) return cb('Balance info not found')
     cb(null, {balance: results[0]})
-  })
+  });
 };
 
 shared.getMyTransactions = function (req, cb) {

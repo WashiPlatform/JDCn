@@ -7,7 +7,7 @@ var sandboxHelper = require('../utils/sandbox.js');
 // Private fields
 var modules, library, self, private = {}, shared = {};
 
-private.loaded = false
+private.loaded = true
 
 // Constructor
 function Server(cb, scope) {

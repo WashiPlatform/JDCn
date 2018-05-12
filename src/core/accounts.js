@@ -181,6 +181,7 @@ private.attachApi = function () {
     "post /open": "open",
     "post /open2": "open2",
     "get /getBalance": "getBalance",
+    "get /balance": "getBalance",
     "get /getPublicKey": "getPublickey",
     "post /generatePublicKey": "generatePublickey",
     "get /delegates": "getDelegates",
@@ -216,26 +217,34 @@ private.attachApi = function () {
       if (!query.limit) {
         query.limit = 100;
       }
-      self.getAccounts({
-        sort: {
-          balance: -1
-        },
-        offset: query.offset,
-        limit: query.limit
-      }, function (err, raw) {
-        if (err) {
-          return res.json({success: false, error: err.toString()});
-        }
-        var accounts = raw.map(function (fullAccount) {
-          return {
-            address: fullAccount.address,
-            balance: fullAccount.balance,
-            publicKey: fullAccount.publicKey
-          }
-        });
 
-        res.json({success: true, accounts: accounts});
-      })
+      library.dbLite.query('select count(*) from mem_accounts', {'count': Number}, function (err, rows) {
+        if (err || !rows) {
+          return res.status(500).send({success: false, error: 'Database error'})
+        }
+
+        self.getAccounts({
+          sort: {
+            balance: -1
+          },
+          offset: query.offset,
+          limit: query.limit
+        }, function (err, raw) {
+          if (err) {
+            return res.json({success: false, error: err.toString()});
+          }
+          var accounts = raw.map(function (fullAccount) {
+            return {
+              address: fullAccount.address,
+              balance: fullAccount.balance,
+              publicKey: fullAccount.publicKey
+            }
+          });
+
+          res.json({success: true, accounts: accounts, count: rows[0].count});
+        });
+        //return res.json({success: true, count: rows[0].count});
+      });
     })
   });
 
@@ -322,7 +331,7 @@ Accounts.prototype.generateAddressByPublicKey = function (publicKey) {
 
 Accounts.prototype.generateAddressByPublicKey2 = function (publicKey) {
   // if (!global.featureSwitch.enableUIA) {
-    return self.generateAddressByPublicKey(publicKey)
+  return self.generateAddressByPublicKey(publicKey)
   // }
   // var oldAddress = self.generateAddressByPublicKey(publicKey)
   // if (library.balanceCache.getNativeBalance(oldAddress)) {
@@ -819,7 +828,7 @@ shared.addDelegates = function (req, cb) {
       cb(null, {transaction: transaction[0]});
     });
   });
-}
+};
 
 shared.getAccount = function (req, cb) {
   var query = req.body;
