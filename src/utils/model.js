@@ -15,13 +15,23 @@ class Model {
     })
   }
 
+  count2(query, cb) {
+    var sql = jsonSql.build(query);
+    sql.query = sql.query.replace(/"/g, '');
+
+    this.dbLite.query(sql.query, sql.values, {count: Number}, function (err, rows) {
+      if (err) return cb('Database error: ' + err)
+      cb(null, rows[0].count)
+    });
+  }
+
   count(table, condition, cb) {
     var sql = jsonSql.build({
       type: 'select',
       table: table,
       fields: ['count(*)'],
       condition: condition
-    })
+    });
     sql.query = sql.query.replace(/"/g, '')
     this.dbLite.query(sql.query, sql.values, {count: Number}, function (err, rows) {
       if (err) return cb('Database error: ' + err)
@@ -157,7 +167,8 @@ class Model {
   getAssetByName(name, cb) {
     var filter = {
       condition: {
-        'a.name': name
+        'a.name': name,
+        'a.writeoff': 0
       }
     }
     this.getAssets(filter, function (err, assets) {
@@ -167,7 +178,7 @@ class Model {
   }
 
   addAssetQuantity(currency, amount, cb) {
-    var sql = 'select quantity from assets where name=$name'
+    var sql = 'select quantity from assets where writeoff=0 and name=$name'
     this.dbLite.query(sql, {name: currency}, {quantity: String}, (err, rows) => {
       if (err) return cb('Database error when query asset: ' + err)
       if (!rows || !rows.length) return cb('Asset not exists')
@@ -236,7 +247,8 @@ class Model {
       type: 'update',
       table: 'assets',
       condition: {
-        name: currency
+        name: currency,
+        writeoff: 0
       },
       modifier: modifier
     })
@@ -251,7 +263,7 @@ class Model {
       type: 'select',
       table: table,
       condition: {
-        currency: currency
+        currency: currency,
       },
       fields: ['address'],
       limit: filter.limit,
@@ -312,10 +324,10 @@ class Model {
    */
   getAccountAssets(address, filter, cb) {
     var condition = {
-      address: address
+      address: address,
+      'a.writeoff': 0,
     }
-    var limit
-    var offset
+    var limit, offset;
     if (typeof filter === 'string') {
       condition.currency = filter
     } else {
@@ -369,7 +381,8 @@ class Model {
 
   getAccountBalances(address, filter, cb) {
     var condition = {
-      address: address
+      address: address,
+      'a.writeoff': 0
     }
     var limit
     var offset
@@ -392,7 +405,7 @@ class Model {
           table: 'assets',
           alias: 'a',
           on: {
-            'a.name': 'b.currency'
+            'a.name': 'b.currency',
           }
         }
       ],
@@ -407,7 +420,8 @@ class Model {
         'a.allowWhitelist': 'allowWhitelist',
         'a.allowBlacklist': 'allowBlacklist'
       }
-    })
+    });
+
     var fieldConv = {
       currency: String,
       balance: String,

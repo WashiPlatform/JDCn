@@ -320,11 +320,11 @@ shared.getIssuerAssets = function (req, cb) {
   }, function (err) {
     if (err) return cb('Invalid parameters: ' + err[0])
 
-    library.model.count('assets', {issuerName: req.params.name}, function (err, count) {
+    library.model.count('assets', {issuerName: req.params.name, writeoff: 0}, function (err, count) {
       if (err) return cb('Failed to get count: ' + err)
 
       var filter = {
-        condition: {issuerName: req.params.name},
+        condition: {issuerName: req.params.name, writeoff: 0},
         limit: query.limit,
         offset: query.offset
       }
@@ -463,10 +463,22 @@ shared.getAccountAssets = function (req, cb) {
   }, function (err) {
     if (err) return cb('Invalid parameters: ' + err[0])
 
-    var condition = {
-      address: req.params.address
-    }
-    library.model.count('mem_asset_balances', condition, function (err, count) {
+    // var condition = {
+    //   address: req.params.address,
+    // }
+    library.model.count2({
+      type: 'select',
+      table: 'assets',
+      alias: 'a',
+      join: [{
+        type: 'inner',
+        table: 'mem_asset_balances',
+        alias: 'b',
+        on: {'a.name': 'b.currency'}
+      }],
+      fields: ['count(*)'],
+      condition: {'b.address': req.params.address, 'a.writeoff': 0}
+    }, function (err, count) {
       if (err) return cb('Failed to get count: ' + err)
 
       var filter = {
@@ -482,7 +494,9 @@ shared.getAccountAssets = function (req, cb) {
           count: count
         })
       });
-    })
+    });
+    // library.model.count('mem_asset_balances', condition, function (err, count) {
+    // })
   })
 };
 
@@ -517,12 +531,22 @@ shared.getBalances = function (req, cb) {
       }
     }
   }, function (err) {
-    if (err) return cb('Invalid parameters: ' + err[0])
+    if (err) return cb('Invalid parameters: ' + err[0]);
 
-    var condition = {
-      address: req.params.address
-    }
-    library.model.count('mem_asset_balances', condition, function (err, count) {
+    var query = {
+      type: 'select',
+      table: 'assets',
+      alias: 'a',
+      join: [{
+        type: 'inner',
+        table: 'mem_asset_balances',
+        alias: 'b',
+        on: {'a.name': 'b.currency'}
+      }],
+      fields: ['count(*)'],
+      condition: {'b.address': req.params.address, 'a.writeoff': 0}
+    };
+    library.model.count2(query, function (err, count) {
       if (err) return cb('Failed to get count: ' + err)
 
       var filter = {
@@ -538,7 +562,7 @@ shared.getBalances = function (req, cb) {
           count: count
         })
       })
-    })
+    });
   })
 };
 
