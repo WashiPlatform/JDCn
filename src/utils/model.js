@@ -168,7 +168,7 @@ class Model {
     var filter = {
       condition: {
         'a.name': name,
-        'a.writeoff': 0
+        // 'a.writeoff': 0
       }
     }
     this.getAssets(filter, function (err, assets) {

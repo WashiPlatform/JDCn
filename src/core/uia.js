@@ -125,8 +125,9 @@ private.queryTransactions = function (query, cb) {
   modules.transactions[func](param, function (err, data) {
     if (err) return cb('Failed to get transactions: ' + err)
 
-    if (!list) data = {transactions: [data]}
-    var sqls = []
+    if (!list) data = {transactions: [data]};
+
+    var sqls = [];
     var typeToTable = {
       9: {
         table: 'issuers',
@@ -152,7 +153,8 @@ private.queryTransactions = function (query, cb) {
         table: 'transfers',
         fields: ['transactionId', 'currency', 'amount']
       }
-    }
+    };
+
     data.transactions.forEach(function (trs) {
       if (!typeToTable[trs.type]) {
         return
@@ -162,7 +164,8 @@ private.queryTransactions = function (query, cb) {
         query: 'select ' + typeToTable[trs.type].fields.join(',') + ' from ' + typeToTable[trs.type].table + ' where transactionId="' + trs.id + '"',
         fields: typeToTable[trs.type].fields
       })
-    })
+    });
+
     async.mapSeries(sqls, function (sql, next) {
       library.dbLite.query(sql.query, {}, sql.fields, next)
     }, function (err, rows) {
@@ -183,6 +186,7 @@ private.queryTransactions = function (query, cb) {
         }
         delete t.t_id
       }
+
       var assetNames = new Set;
       data.transactions.forEach(function (trs) {
         if (trs.type === 13) {
@@ -190,16 +194,20 @@ private.queryTransactions = function (query, cb) {
         } else if (trs.type === 14) {
           assetNames.add(trs.asset.uiaTransfer.currency)
         }
-      })
+      });
+
       assetNames = Array.from(assetNames)
       async.mapSeries(assetNames, function (name, next) {
         library.model.getAssetByName(name, next)
       }, function (err, assets) {
-        if (err) return cb('Failed to asset info: ' + err)
-        var precisionMap = new Map
+        if (err)
+          return cb('Failed to asset info: ' + err);
+
+        var precisionMap = new Map;
         assets.forEach(function (a) {
           precisionMap.set(a.name, a.precision)
-        })
+        });
+
         data.transactions.forEach(function (trs) {
           var obj = null
           if (trs.type === 13) {
@@ -212,12 +220,12 @@ private.queryTransactions = function (query, cb) {
             obj.amountShow = amountHelper.calcRealAmount(obj.amount, precision)
             obj.precision = precision
           }
-        })
+        });
         cb(null, data)
       })
     })
   })
-}
+};
 
 // Shared
 shared.getFee = function (req, cb) {
