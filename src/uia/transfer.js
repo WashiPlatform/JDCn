@@ -143,13 +143,13 @@ function Transfer() {
   }
 
   this.dbSave = function (trs, cb) {
-    var currency = trs.asset.uiaTransfer.currency
-    var amount = trs.asset.uiaTransfer.amount
+    var currency = trs.asset.uiaTransfer.currency;
+    var amount = trs.asset.uiaTransfer.amount;
     var values = {
       transactionId: trs.id,
       currency: currency,
       amount: amount
-    }
+    };
     library.model.add('transfers', values, cb)
   }
 

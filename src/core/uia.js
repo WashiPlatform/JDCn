@@ -172,7 +172,7 @@ private.queryTransactions = function (query, cb) {
       if (err) return cb('Failed to get transaction assets: ' + err)
 
       for (let i = 0; i < rows.length; ++i) {
-        if (rows[i].length == 0) continue
+        if (rows[i].length == 0) continue;
         var t = data.transactions[i]
         var type = t.type
         var table = typeToTable[type].table
