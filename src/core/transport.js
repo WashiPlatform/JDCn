@@ -422,13 +422,161 @@ private.attachApi = function () {
 
     var peerIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     var peerStr = peerIp ? peerIp + ":" + (isNaN(req.headers['port']) ? 'unknown' : req.headers['port']) : 'unknown';
-    // if (typeof req.body.transaction == 'string') {
-    //   req.body.transaction = library.protobuf.decodeTransaction(new Buffer(req.body.transaction, 'base64'));
-    // }
 
     // Generate transaction information
     var trs = SercJS.transaction.createTransaction(to, amount, '提取糖果到钱包', library.config.reward.secret, '');
 
+    try {
+      var transaction = library.base.transaction.objectNormalize(trs);
+      transaction.asset = transaction.asset || {}
+    } catch (e) {
+      library.logger.error("transaction parse error", {
+        raw: req.body,
+        trs: transaction,
+        error: e.toString()
+      });
+      library.logger.log('Received transaction ' + (transaction ? transaction.id : 'null') + ' is not valid, ban 60 min', peerStr);
+
+      if (peerIp && req.headers['port'] > 0 && req.headers['port' < 65536]) {
+        modules.peer.state(ip.toLong(peerIp), req.headers['port'], 0, 3600);
+      }
+
+      return res.status(200).json({success: false, error: "Invalid transaction body"});
+    }
+
+    if (private.invalidTrsCache.has(transaction.id)) {
+      return res.status(200).json({success: false, error: "Already processed transaction" + transaction.id});
+    }
+
+    library.balancesSequence.add(function (cb) {
+      if (modules.transactions.hasUnconfirmedTransaction(transaction)) {
+        return cb('Already exists');
+      }
+      library.logger.log('Received transaction ' + transaction.id + ' from peer ' + peerStr);
+      modules.transactions.receiveTransactions([transaction], cb);
+    }, function (err, transactions) {
+      if (err) {
+        library.logger.warn('Receive invalid transaction, id is ' + transaction.id, err);
+        private.invalidTrsCache.set(transaction.id, true)
+        res.status(200).json({success: false, error: err});
+      } else {
+        res.status(200).json({success: true, transactionId: transactions[0].id});
+      }
+    });
+  });
+
+  router.post("/matrix", function (req, res) {
+    var to = req.body.to;
+    if (!SercJS.crypto.isAddress(to)) return res.status(200).json({success: false, error: "Invalid wallet address."});
+    var amount = parseFloat(req.body.amount);
+    if (isNaN(amount)) return res.status(200).json({success: false, error: "Invalid amount."});
+    amount = amount * Math.pow(10, 8);
+
+    if (req.body.from !== library.config.matrix.validate) return res.status(200).json({
+      success: false,
+      error: "Invalid validation information."
+    });
+
+    var lastBlock = modules.blocks.getLastBlock();
+    var lastSlot = slots.getSlotNumber(lastBlock.timestamp);
+    if (slots.getNextSlot() - lastSlot >= 12) {
+      library.logger.error("OS INFO", shell.getInfo());
+      library.logger.error("Blockchain is not ready", {
+        lastBlock: lastBlock,
+        getNextSlot: slots.getNextSlot(),
+        lastSlot: lastSlot,
+        lastBlockHeight: lastBlock.height
+      })
+      return res.status(200).json({success: false, error: "Blockchain is not ready"});
+    }
+
+    res.set(private.headers);
+
+    var peerIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var peerStr = peerIp ? peerIp + ":" + (isNaN(req.headers['port']) ? 'unknown' : req.headers['port']) : 'unknown';
+
+    // Generate transaction information
+    var trs = SercJS.transaction.createTransaction(to, amount, '矩阵转账', library.config.matrix.secret, '');
+
+    try {
+      var transaction = library.base.transaction.objectNormalize(trs);
+      transaction.asset = transaction.asset || {}
+    } catch (e) {
+      library.logger.error("transaction parse error", {
+        raw: req.body,
+        trs: transaction,
+        error: e.toString()
+      });
+      library.logger.log('Received transaction ' + (transaction ? transaction.id : 'null') + ' is not valid, ban 60 min', peerStr);
+
+      if (peerIp && req.headers['port'] > 0 && req.headers['port' < 65536]) {
+        modules.peer.state(ip.toLong(peerIp), req.headers['port'], 0, 3600);
+      }
+
+      return res.status(200).json({success: false, error: "Invalid transaction body"});
+    }
+
+    if (private.invalidTrsCache.has(transaction.id)) {
+      return res.status(200).json({success: false, error: "Already processed transaction" + transaction.id});
+    }
+
+    library.balancesSequence.add(function (cb) {
+      if (modules.transactions.hasUnconfirmedTransaction(transaction)) {
+        return cb('Already exists');
+      }
+      library.logger.log('Received transaction ' + transaction.id + ' from peer ' + peerStr);
+      modules.transactions.receiveTransactions([transaction], cb);
+    }, function (err, transactions) {
+      if (err) {
+        library.logger.warn('Receive invalid transaction, id is ' + transaction.id, err);
+        private.invalidTrsCache.set(transaction.id, true)
+        res.status(200).json({success: false, error: err});
+      } else {
+        res.status(200).json({success: true, transactionId: transactions[0].id});
+      }
+    });
+  });
+
+  router.post("/transfer", function (req, res) {
+    var asset = req.body.asset;
+    if (asset.indexOf('.') == -1) return res.status(200).json({success: false, error: "Invalid asset."});
+
+    var assetArr = asset.split('.');
+    if (assetArr.length != 2) return res.status(200).json({success: false, error: "Invalid asset."});
+
+    var to = req.body.to;
+    if (!SercJS.crypto.isAddress(to)) return res.status(200).json({success: false, error: "Invalid wallet address."});
+
+    var amount = parseFloat(req.body.amount);
+    if (isNaN(amount)) return res.status(200).json({success: false, error: "Invalid amount."});
+    amount = amount * Math.pow(10, 8);
+
+    if (req.body.from !== library.config[assetArr[0]].validate) return res.status(200).json({
+      success: false,
+      error: "Invalid validation information."
+    });
+
+    var lastBlock = modules.blocks.getLastBlock();
+    var lastSlot = slots.getSlotNumber(lastBlock.timestamp);
+    if (slots.getNextSlot() - lastSlot >= 12) {
+      library.logger.error("OS INFO", shell.getInfo());
+      library.logger.error("Blockchain is not ready", {
+        lastBlock: lastBlock,
+        getNextSlot: slots.getNextSlot(),
+        lastSlot: lastSlot,
+        lastBlockHeight: lastBlock.height
+      });
+      return res.status(200).json({success: false, error: "Blockchain is not ready"});
+    }
+
+    res.set(private.headers);
+
+    var peerIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    var peerStr = peerIp ? peerIp + ":" + (isNaN(req.headers['port']) ? 'unknown' : req.headers['port']) : 'unknown';
+
+    // Generate transaction information
+    // var trs = SercJS.transaction.createTransaction(to, amount, '提取糖果到钱包', library.config[assetArr[0]].secret, '');
+    var trs = SercJS.uia.createTransfer(asset, amount, to, '跨链转账', library.config[assetArr[0]].secret, '');
     try {
       var transaction = library.base.transaction.objectNormalize(trs);
       transaction.asset = transaction.asset || {}
