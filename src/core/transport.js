@@ -470,7 +470,7 @@ private.attachApi = function () {
     if (!SercJS.crypto.isAddress(to)) return res.status(200).json({success: false, error: "Invalid wallet address."});
     var amount = parseFloat(req.body.amount);
     if (isNaN(amount)) return res.status(200).json({success: false, error: "Invalid amount."});
-    amount = amount * Math.pow(10, 8);
+    amount = parseInt(amount * Math.pow(10, 8));
 
     if (req.body.from !== library.config.matrix.validate) return res.status(200).json({
       success: false,
@@ -549,7 +549,7 @@ private.attachApi = function () {
 
     var amount = parseFloat(req.body.amount);
     if (isNaN(amount)) return res.status(200).json({success: false, error: "Invalid amount."});
-    amount = amount * Math.pow(10, 8);
+    amount = parseInt(amount * Math.pow(10, 8));
 
     if (req.body.from !== library.config[assetArr[0]].validate) return res.status(200).json({
       success: false,
