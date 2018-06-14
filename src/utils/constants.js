@@ -12,10 +12,10 @@ module.exports = {
   requestLength: 104,
   signatureLength: 196,
   maxSignaturesLength: 196 * 256,
-  maxConfirmations : 77 * 100,
+  maxConfirmations: 77 * 100,
   confirmationLength: 77,
-  fixedPoint : Math.pow(10, 8),
-  totalAmount: 840000000000000000,
+  fixedPoint: Math.pow(10, 8),
+  totalAmount: 8400000000 * Math.pow(10, 8),
   maxTxsPerBlock: 500,
 
 
